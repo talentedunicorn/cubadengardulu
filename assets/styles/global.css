@@ -1,0 +1,46 @@
+:root {
+  --black: #181818;
+  --white: #FFFFFF;
+  --baige: #F1F0EB;
+  --pink: #F64771;
+  --blue: #84D7EF;
+  --blue-dark: #1DB6E2;
+  --font: "Nunito", sans-serif;
+  --font-alt: "Roboto", sans-serif;
+  --container: 85rem;
+}
+
+body {
+  font-family: var(--font);
+  background-color: var(--baige);
+  color: var(--black);
+  font-size: 18px;
+}
+
+a {
+  color: inherit;
+  font-weight: bold;
+}
+
+a:hover {
+  color: var(--blue-dark);
+}
+
+p {
+  margin-bottom: 0.5em;
+}
+
+.heading {
+  font-family: var(--font-alt);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+}
+
+.container {
+  max-width: var(--container);
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
