@@ -25,11 +25,12 @@ export default {
     "~/assets/styles/fonts.css",
     "~/assets/styles/global.css",
     "~/assets/styles/button.css",
+    "~/assets/styles/transitions.css",
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    "~/plugins/contentful.ts"
+    "~/plugins/contentful.ts",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

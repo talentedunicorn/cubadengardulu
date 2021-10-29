@@ -1,0 +1,74 @@
+<template>
+  <article class="Playlist">
+    <h3 class="PlaylistTitle">{{ playlist.fields.title }}</h3>
+    <img class="PlaylistImage" :src="playlist.fields.cover.fields.file.url" :alt="playlist.fields.cover.fields.title"/>
+    <div class="PlaylistContent">
+      <slot></slot>
+      <iframe v-show="iframeLoaded" :src="playlist.fields.link" width="100%" height="380" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" @load="iframeLoaded = true"></iframe>
+    </div>
+  </article>
+</template>
+<script lang="ts">
+// eslint-disable-next-line import/named
+import Vue, { PropType } from 'vue'
+import { RichTextContent } from 'contentful'
+
+type TPlaylist = {
+  fields: {
+    cover: {
+      fields: {
+        file: { url: string }
+        title: string
+      },
+    },
+    link: string
+    content: RichTextContent
+  }
+}
+export default Vue.extend({
+  props: {
+    playlist: {
+      type: Object as PropType<TPlaylist>,
+      default: {} as PropType<TPlaylist>
+    }
+  },
+  data() {
+    return {
+      iframeLoaded: false
+    }
+  }
+})
+</script>
+
+<style scoped>
+.Playlist {
+  display: grid;
+  grid-template-areas: "image" "title" "content";
+  gap: 2rem;
+}
+
+.PlaylistTitle {
+  grid-area: title;
+  align-self: end;
+}
+
+.PlaylistImage {
+  grid-area: image;
+}
+
+.PlaylistContent {
+  grid-area: content;
+}
+
+@media screen and (min-width: 60rem) {
+  .Playlist {
+    grid-template-areas: "image title" "image content";
+    position: relative;
+  }
+
+  .PlaylistImage {
+    position: sticky;
+    top: 6rem;
+  }
+}
+</style>

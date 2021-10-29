@@ -40,7 +40,7 @@
         </figure>
         <div class="content">
           <RichTextRenderer :document="pledge.fields.content" />
-          <button class="button">Pledge now</button>
+          <button class="button" disabled>Pledge now</button>
         </div>
       </div>
     </section>
@@ -48,14 +48,15 @@
     <section id="playlist" class="Playlists">
       <div class="container">
         <h2 class="heading">Playlist</h2>
-        <article v-for="playlist in playlists" :key="playlist.sys.id" class="Playlist">
-          <h3 class="PlaylistTitle">{{ playlist.fields.title }}</h3>
-          <img class="PlaylistImage" :src="playlist.fields.cover.fields.file.url" :alt="playlist.fields.cover.fields.title"/>
-          <div class="PlaylistContent">
-            <RichTextRenderer :document="playlist.fields.content" />
-            <iframe :src="playlist.fields.link" width="100%" height="380" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-          </div>
-        </article>
+        <Playlist v-for="playlist in playlists" :key="playlist.sys.id" :playlist="playlist">
+          <RichTextRenderer :document="playlist.fields.content" />
+        </Playlist>
+      </div>
+    </section>
+    <section id="faqs">
+      <div class="container">
+        <h2 class="heading">FAQs</h2>
+        <FAQs />
       </div>
     </section>
   </div>
@@ -201,25 +202,6 @@ nav,
   align-self: flex-start;
 }
 
-.Playlist {
-  display: grid;
-  grid-template-areas: "image" "title" "content";
-  gap: 2rem;
-}
-
-.PlaylistTitle {
-  grid-area: title;
-  align-self: end;
-}
-
-.PlaylistImage {
-  grid-area: image;
-}
-
-.PlaylistContent {
-  grid-area: content;
-}
-
 @media screen and (max-width: 60rem) {
   .menu:not(.opened) {
     display: none;
@@ -241,16 +223,6 @@ nav,
   .menu {
     flex-flow: row;
     align-items: center;
-  }
-
-  .Playlist {
-    grid-template-areas: "image title" "image content";
-    position: relative;
-  }
-
-  .PlaylistImage {
-    position: sticky;
-    top: 6rem;
   }
 }
 </style>

@@ -21,3 +21,9 @@
 .button:active {
   --button-bg: var(--blue);
 }
+
+.button:disabled {
+  border-color: var(--button-color);
+  --button-color: var(--gray);
+  --button-bg: var(--gray-light);
+}
