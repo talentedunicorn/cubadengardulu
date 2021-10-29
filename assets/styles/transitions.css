@@ -1,6 +1,6 @@
 .slide-down-enter-active,
 .slide-down-leave-to {
-  transition: transform 1.2s, opacity 1s;
+  transition: transform 1.2s, opacity 1s var(--ease);
 }
 
 .slide-down-enter,

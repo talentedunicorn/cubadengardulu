@@ -17,10 +17,10 @@
 
 
       <div :class="{ opened: menuOpened }" class="menu">
-        <a href="#playlist">Playlist</a>
-        <a href="#faqs">FAQs</a>
-        <a href="#getInTouch">Get in touch</a>
-        <button class="button">Pledge now</button>
+        <a v-scrollTo href="#playlist" @click="closeMenu">Playlist</a>
+        <a v-scrollTo href="#faqs" @click="closeMenu">FAQs</a>
+        <a v-scrollTo href="#getInTouch" @click="closeMenu">Get in touch</a>
+        <button class="button" @click="closeMenu">Pledge now</button>
       </div>
     </nav>
 
@@ -85,6 +85,9 @@ export default Vue.extend({
   },
   methods: {
    makeHash: (value: string) => `#${value.toLowerCase()}`,
+   closeMenu () {
+     if (this.menuOpened) this.menuOpened = false
+   }
   },
 })
 </script>

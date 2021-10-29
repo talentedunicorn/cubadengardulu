@@ -9,11 +9,9 @@
             <use xlink:href="#arrow-down"></use>
           </svg>
         </dt>
-        <transition name="slide-down">
           <dd v-if="selected === item.sys.id" class="FAQContent">
             <RichTextRenderer :document="item.fields.answer" />
           </dd>
-        </transition>
       </div>
     </section>
   </dl>
@@ -82,7 +80,7 @@ export default Vue.extend({
   cursor: pointer;
   border: 0.2em solid var(--blue-dark);
   border-radius: 1em;
-  font-size: 1rem;
+  font-size: 1.2rem;
   background: var(--blue-dark);
   color: var(--white);
 }
