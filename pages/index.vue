@@ -17,7 +17,7 @@
 
 
       <div :class="{ opened: menuOpened }" class="menu">
-        <a href="#suratCinta64Tahun">Surat Cinta 64 Tahun</a>
+        <a href="#playlist">Playlist</a>
         <a href="#faqs">FAQs</a>
         <a href="#getInTouch">Get in touch</a>
         <button class="button">Pledge now</button>
@@ -44,6 +44,20 @@
         </div>
       </div>
     </section>
+
+    <section id="playlist" class="Playlists">
+      <div class="container">
+        <h2 class="heading">Playlist</h2>
+        <article v-for="playlist in playlists" :key="playlist.sys.id" class="Playlist">
+          <h3 class="PlaylistTitle">{{ playlist.fields.title }}</h3>
+          <img class="PlaylistImage" :src="playlist.fields.cover.fields.file.url" :alt="playlist.fields.cover.fields.title"/>
+          <div class="PlaylistContent">
+            <RichTextRenderer :document="playlist.fields.content" />
+            <iframe :src="playlist.fields.link" width="100%" height="380" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+          </div>
+        </article>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -57,10 +71,11 @@ export default Vue.extend({
     RichTextRenderer,
   },
   async asyncData() {
+    const socialLinks = (await getClient().getEntries({ content_type: 'socialLinks' })).items
     const intro = await getClient().getEntry('2LeUyfp9edbEuOvBO1CCEQ')
     const pledge = await getClient().getEntry('1Br2SVPNM0uxZjnRa9SCl4')
-    const socialLinks = (await getClient().getEntries({ content_type: 'socialLinks' })).items
-    return { intro, pledge, socialLinks }
+    const playlists = (await getClient().getEntries({ content_type: 'playlist'})).items
+    return { intro, pledge, socialLinks, playlists }
   },
   data() {
     return {
@@ -96,6 +111,7 @@ nav {
   background: var(--white);
   position: sticky;
   top: 0;
+  z-index: 3;
 }
 
 nav > div {
@@ -151,9 +167,8 @@ nav,
   flex-flow: column;
 }
 
-.Intro,
-.Intro .container,
-.Pledge {
+.Page > section,
+.Intro .container {
   padding: 2rem 2rem 4rem;
 }
 
@@ -186,6 +201,25 @@ nav,
   align-self: flex-start;
 }
 
+.Playlist {
+  display: grid;
+  grid-template-areas: "image" "title" "content";
+  gap: 2rem;
+}
+
+.PlaylistTitle {
+  grid-area: title;
+  align-self: end;
+}
+
+.PlaylistImage {
+  grid-area: image;
+}
+
+.PlaylistContent {
+  grid-area: content;
+}
+
 @media screen and (max-width: 60rem) {
   .menu:not(.opened) {
     display: none;
@@ -207,6 +241,16 @@ nav,
   .menu {
     flex-flow: row;
     align-items: center;
+  }
+
+  .Playlist {
+    grid-template-areas: "image title" "image content";
+    position: relative;
+  }
+
+  .PlaylistImage {
+    position: sticky;
+    top: 6rem;
   }
 }
 </style>
