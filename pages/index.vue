@@ -17,8 +17,8 @@
 
 
       <div :class="{ opened: menuOpened }" class="menu">
-        <a v-scrollTo href="#playlist" @click="closeMenu">Playlist</a>
         <a v-scrollTo href="#faqs" @click="closeMenu">FAQs</a>
+        <a v-scrollTo href="#playlist" @click="closeMenu">Listen</a>
         <a v-scrollTo href="#getInTouch" @click="closeMenu">Get in touch</a>
         <button class="button" @click="closeMenu">Pledge now</button>
       </div>
@@ -45,9 +45,9 @@
       </div>
     </section>
 
-    <section id="playlist" class="Playlists">
+    <section id="playlist">
       <div class="container">
-        <h2 class="heading">Playlist</h2>
+        <h2 class="heading">Listen</h2>
         <Playlist v-for="playlist in playlists" :key="playlist.sys.id" :playlist="playlist">
           <RichTextRenderer :document="playlist.fields.content" />
         </Playlist>
@@ -142,6 +142,7 @@ figure {
 
 .social {
   align-items: center;
+  margin-left: 1rem;
 }
 
 .menu-toggle {

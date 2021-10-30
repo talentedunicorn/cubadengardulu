@@ -11,7 +11,7 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: 'an initiative by youths, for youths to promote an empathetic approach to the freedoms of religion or belief and expression' },
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
