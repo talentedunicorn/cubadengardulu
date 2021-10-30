@@ -1,17 +1,18 @@
 import Vue from 'vue'
 
-const scrollTo = (ev: MouseEvent): void => {
-  const targetEl = document.querySelector((ev.target as HTMLElement).getAttribute('href'))
+const scrollTo = (ev: MouseEvent, target: string): void => {
+  const targetEl = document.querySelector(`#${target}`)
   ev.preventDefault()
   targetEl && targetEl.scrollIntoView({
     behavior: 'smooth',
-    block: 'start'
+    block: 'start',
+    inline: 'nearest',
   })
 }
 
 Vue.directive('scrollTo', {
-  bind: (el) => {
-    el.addEventListener('click', scrollTo)
+  bind: (el, binding) => {
+    el.addEventListener('click', (e) => scrollTo(e, binding.value))
   },
-  unbind: (el) => el.removeEventListener('click', scrollTo)
+  unbind: (el, binding) => el.removeEventListener('click', (e) => scrollTo(e, binding.value))
 })

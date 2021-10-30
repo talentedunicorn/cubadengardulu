@@ -4,7 +4,7 @@
     <img class="PlaylistImage" :src="playlist.fields.cover.fields.file.url" :alt="playlist.fields.cover.fields.title"/>
     <div class="PlaylistContent">
       <slot></slot>
-      <iframe v-show="iframeLoaded" :src="playlist.fields.link" width="100%" height="380" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" @load="iframeLoaded = true"></iframe>
+      <iframe v-show="iframeLoaded" :src="playlist.fields.link" width="100%" height="380" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class="PlaylistEmbed" @load="iframeLoaded = true"></iframe>
     </div>
   </article>
 </template>
@@ -44,7 +44,7 @@ export default Vue.extend({
 .Playlist {
   display: grid;
   grid-template-areas: "image" "title" "content";
-  gap: 2rem;
+  gap: 2rem 4rem;
 }
 
 .PlaylistTitle {
@@ -58,6 +58,10 @@ export default Vue.extend({
 
 .PlaylistContent {
   grid-area: content;
+}
+
+.PlaylistEmbed {
+  margin-top: 2rem;
 }
 
 @media screen and (min-width: 60rem) {

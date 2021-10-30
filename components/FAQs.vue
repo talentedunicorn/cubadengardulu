@@ -2,8 +2,8 @@
   <p v-if="$fetchState.pending">Loading FAQs...</p>
   <dl v-else class="FAQs">
     <section class="FAQWrapper">
-      <div v-for="item in faqs" :key="item.sys.id" :class="{ selected: selected === item.sys.id }" class="FAQ">
-        <dt class="FAQTitle" @click="selected = item.sys.id">
+      <div v-for="(item, index) in faqs" :id="'#faq_' + index" :key="item.sys.id" :class="{ selected: selected === item.sys.id }" class="FAQ">
+        <dt v-scrollTo="'faq_' + index" class="FAQTitle" @click="selected = item.sys.id">
           {{ item.fields.title }}
           <svg v-if="selected !== item.sys.id" viewBox="0 0 24 24">
             <use xlink:href="#arrow-down"></use>

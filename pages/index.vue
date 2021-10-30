@@ -17,9 +17,9 @@
 
 
       <div :class="{ opened: menuOpened }" class="menu">
-        <a v-scrollTo href="#faqs" @click="closeMenu">FAQs</a>
-        <a v-scrollTo href="#playlist" @click="closeMenu">Listen</a>
-        <a v-scrollTo href="#getInTouch" @click="closeMenu">Get in touch</a>
+        <a v-scrollTo="'faqs'" href="#faqs" @click="closeMenu">FAQs</a>
+        <a v-scrollTo="'playlist'" href="#playlist" @click="closeMenu">Listen</a>
+        <a v-scrollTo="'getInTouch'" href="#getInTouch" @click="closeMenu">Get in touch</a>
         <button class="button" @click="closeMenu">Pledge now</button>
       </div>
     </nav>
@@ -45,7 +45,7 @@
       </div>
     </section>
 
-    <section id="playlist">
+    <section id="playlist" class="Playlists">
       <div class="container">
         <h2 class="heading">Listen</h2>
         <Playlist v-for="playlist in playlists" :key="playlist.sys.id" :playlist="playlist">
@@ -206,6 +206,10 @@ nav,
   align-self: flex-start;
 }
 
+.Playlists {
+  background: var(--blue);
+}
+
 @media screen and (max-width: 60rem) {
   .menu:not(.opened) {
     display: none;
@@ -220,7 +224,7 @@ nav,
   .Pledge figure,
   .Pledge .content,
   .Intro p:nth-of-type(-n+2) {
-    flex: 0 calc(50% - 2rem);
+    flex: 0 calc(50% - 1rem);
   }
 
   nav,
