@@ -24,6 +24,7 @@ export default {
     "~/assets/styles/reset.css",
     "~/assets/styles/fonts.css",
     "~/assets/styles/global.css",
+    "~/assets/styles/form.css",
     "~/assets/styles/button.css",
     "~/assets/styles/transitions.css",
   ],

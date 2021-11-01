@@ -59,6 +59,12 @@
         <FAQs />
       </div>
     </section>
+    <section id="getInTouch" class="Contact">
+      <div class="container">
+        <h2 class="heading">Get in touch</h2>
+        <ContactForm class="ContactForm" />
+      </div>
+    </section>
   </div>
 </template>
 
@@ -205,6 +211,10 @@ nav,
 
 .Playlists {
   background: var(--blue);
+}
+
+.ContactForm {
+  flex: 0 60rem;
 }
 
 @media screen and (max-width: 60rem) {
