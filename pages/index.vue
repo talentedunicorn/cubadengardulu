@@ -113,9 +113,6 @@ nav {
   flex-wrap: wrap;
   justify-content: space-between;
   background: var(--white);
-  position: sticky;
-  top: 0;
-  z-index: 3;
 }
 
 nav > div {
@@ -231,6 +228,12 @@ nav,
   .menu {
     flex-flow: row;
     align-items: center;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 3;
   }
 }
 </style>

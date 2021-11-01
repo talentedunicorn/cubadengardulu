@@ -1,30 +1,27 @@
 <template>
-  <p v-if="$fetchState.pending">Loading FAQs...</p>
-  <dl v-else class="FAQs">
-    <section class="FAQWrapper">
-      <div v-for="(item, index) in faqs" :id="'#faq_' + index" :key="item.sys.id" :class="{ selected: selected === item.sys.id }" class="FAQ">
-        <dt v-scrollTo="'faq_' + index" class="FAQTitle" @click="selected = item.sys.id">
-          {{ item.fields.title }}
-          <svg v-if="selected !== item.sys.id" viewBox="0 0 24 24">
-            <use xlink:href="#arrow-down"></use>
-          </svg>
-        </dt>
-          <dd v-if="selected === item.sys.id" class="FAQContent">
-            <RichTextRenderer :document="item.fields.answer" />
-          </dd>
-      </div>
-    </section>
+  <dl class="FAQs">
+    <div v-for="(item, index) in faqs.items" :id="'#faq_' + index" :key="item.sys.id" :class="{ selected: selected === item.sys.id }" class="FAQ">
+      <dt v-scrollTo="'faq_' + index" class="FAQTitle" @click="selected = item.sys.id">
+        {{ item.fields.title }}
+        <svg v-if="selected !== item.sys.id" viewBox="0 0 24 24">
+          <use xlink:href="#arrow-down"></use>
+        </svg>
+      </dt>
+        <dd v-if="selected === item.sys.id" class="FAQContent">
+          <RichTextRenderer :document="item.fields.answer" />
+        </dd>
+    </div>
   </dl>
 </template>
 
 <script lang="ts">
 // eslint-disable-next-line import/named
-import Vue, { PropType } from 'vue'
-import { RichTextContent } from 'contentful'
+import Vue from 'vue'
+import { RichTextContent, ContentfulCollection, Entry } from 'contentful'
 import RichTextRenderer from 'contentful-rich-text-vue-renderer'
 import { getClient } from '~/plugins/contentful'
 
-type FAQ = {
+interface FAQ {
   fields: {
     title: string
     answer: RichTextContent
@@ -34,38 +31,34 @@ export default Vue.extend({
   components: {
     RichTextRenderer
   },
-  data(): { faqs: PropType<FAQ[]>, selected: string } {
+  data(): { faqs: ContentfulCollection<Entry<FAQ>>, selected: string } {
     return {
-      faqs: Array as PropType<FAQ[]>,
+      faqs: {} as ContentfulCollection<Entry<FAQ>>,
       selected: "",
     }
   },
   async fetch() {
-    this.faqs = (await getClient().getEntries({ content_type: 'faq', order: 'sys.updatedAt' })).items as unknown as PropType<FAQ[]>
+    this.faqs = (await getClient().getEntries({ content_type: 'faq', order: 'sys.updatedAt' }))
+    this.selected = this.faqs.items[0].sys.id
   }
 })
 </script>
 <style scoped>
 .FAQs,
 .FAQ,
-.FAQTitle,
-.FAQWrapper {
+.FAQTitle {
   display: flex;
   gap: 1rem;
 }
 
 .FAQs {
-  min-height: 30rem;
+  min-height: 70vh;
   flex: 100%;
 }
 
-.FAQWrapper,
+.FAQs,
 .FAQ {
   flex-flow: column;
-}
-
-.FAQWrapper {
-  flex: 0 40rem;
 }
 
 .FAQTitle {
@@ -79,7 +72,7 @@ export default Vue.extend({
 .FAQ:not(.selected) .FAQTitle {
   cursor: pointer;
   border: 0.2em solid var(--blue-dark);
-  border-radius: 1em;
+  border-radius: 0.3em;
   font-size: 1.2rem;
   background: var(--blue-dark);
   color: var(--white);
