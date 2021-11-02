@@ -20,7 +20,7 @@
         <a v-scrollTo="'faqs'" href="#faqs" @click="closeMenu">FAQs</a>
         <a v-scrollTo="'playlist'" href="#playlist" @click="closeMenu">Listen</a>
         <a v-scrollTo="'getInTouch'" href="#getInTouch" @click="closeMenu">Get in touch</a>
-        <button class="button" @click="closeMenu">Pledge now</button>
+        <button class="button" @click="pledgeOpened = true">Pledge now</button>
       </div>
     </nav>
 
@@ -40,7 +40,13 @@
         </figure>
         <div class="content">
           <RichTextRenderer :document="pledge.fields.content" />
-          <button class="button" disabled>Pledge now</button>
+          <button class="button" @click="pledgeOpened = true">Pledge now</button>
+          <Modal :opened="pledgeOpened" @closed="pledgeOpened = false">
+            <template #header>
+              <h3>Pledge now</h3>
+            </template>
+            <p>Things on a Modal</p>
+          </Modal>
         </div>
       </div>
     </section>
@@ -86,7 +92,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      menuOpened: false
+      menuOpened: false,
+      pledgeOpened: false,
     }
   },
   methods: {
