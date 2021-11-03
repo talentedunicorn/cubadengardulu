@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form class="form">
     <div>
       <label for="fullName">Full name</label>
       <input id="fullName" type="text" required>
@@ -21,20 +21,6 @@
 </template>
 
 <style scoped>
-form,
-form > div {
-  display: flex;
-  flex-flow: column;
-}
-
-form {
-  gap: 2rem;
-}
-
-form > div {
-  gap: 0.3em;
-}
-
 .button {
   flex: 1;
 }
@@ -48,6 +34,10 @@ form > div {
   
   form > * {
     flex: calc((100% / 3) - 2rem);
+  }
+
+  .button {
+    flex: 0 calc((100% / 3) - 2rem);
   }
 }
 </style>

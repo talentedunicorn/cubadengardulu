@@ -33,19 +33,23 @@
 
     <section class="Pledge">
       <div class="container">
-        <h2 class="heading">{{ pledge.fields.title }}</h2>
+        <h2 class="heading">{{ pledgeContent.fields.title }}</h2>
         <figure>
-          <img :src="pledge.fields.image.fields.file.url" :alt="pledge.fields.image.fields.description">
-          <figcaption>{{ pledge.fields.image.fields.description }}</figcaption>
+          <img :src="pledgeContent.fields.image.fields.file.url" :alt="pledgeContent.fields.image.fields.description">
+          <figcaption>{{ pledgeContent.fields.image.fields.description }}</figcaption>
         </figure>
         <div class="content">
+          <RichTextRenderer :document="pledgeContent.fields.content" />
           <RichTextRenderer :document="pledge.fields.content" />
           <button class="button" @click="pledgeOpened = true">Pledge now</button>
           <Modal :opened="pledgeOpened" @closed="pledgeOpened = false">
             <template #header>
-              <h3>Pledge now</h3>
+              <h3>Make your pledge</h3>
             </template>
-            <p>Things on a Modal</p>
+            <div class="PledgeForm">
+              <RichTextRenderer :document="pledge.fields.content" />
+              <PledgeForm @submitted="pledgeOpened = false" />
+            </div>
           </Modal>
         </div>
       </div>
@@ -86,9 +90,10 @@ export default Vue.extend({
   async asyncData() {
     const socialLinks = (await getClient().getEntries({ content_type: 'socialLinks' })).items
     const intro = await getClient().getEntry('2LeUyfp9edbEuOvBO1CCEQ')
-    const pledge = await getClient().getEntry('1Br2SVPNM0uxZjnRa9SCl4')
+    const pledgeContent = await getClient().getEntry('1Br2SVPNM0uxZjnRa9SCl4')
+    const pledge = await getClient().getEntry('3DmtPWsvUUBrk4WZCzCxK3')
     const playlists = (await getClient().getEntries({ content_type: 'playlist'})).items
-    return { intro, pledge, socialLinks, playlists }
+    return { intro, pledge, pledgeContent, socialLinks, playlists }
   },
   data() {
     return {
@@ -214,6 +219,10 @@ nav,
   background: var(--white);
   border-radius: 2rem;
   align-self: flex-start;
+}
+
+.PledgeForm {
+  padding: 2rem 1rem;
 }
 
 .Playlists {

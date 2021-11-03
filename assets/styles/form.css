@@ -14,3 +14,17 @@ input:focus,
 textarea:focus {
   --shadow: var(--black);
 }
+
+.form,
+.form > div {
+  display: flex;
+  flex-flow: column;
+}
+
+.form {
+  gap: 2rem;
+}
+
+.form > div {
+  gap: 0.3em;
+}
