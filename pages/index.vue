@@ -2,7 +2,11 @@
   <div class="Page">
     <nav>
       <div class="social">
-        <a v-for="(social, index) in socialLinks" :key="index" :href="social.fields.url">
+        <a
+          v-for="(social, index) in socialLinks"
+          :key="index"
+          :href="social.fields.url"
+        >
           <svg viewBox="0 0 24 25">
             <use :xlink:href="makeHash(social.fields.title)"></use>
           </svg>
@@ -15,11 +19,14 @@
         </button>
       </div>
 
-
       <div :class="{ opened: menuOpened }" class="menu">
         <a v-scrollTo="'faqs'" href="#faqs" @click="closeMenu">FAQs</a>
-        <a v-scrollTo="'playlist'" href="#playlist" @click="closeMenu">Listen</a>
-        <a v-scrollTo="'getInTouch'" href="#getInTouch" @click="closeMenu">Get in touch</a>
+        <a v-scrollTo="'playlist'" href="#playlist" @click="closeMenu"
+          >Listen</a
+        >
+        <a v-scrollTo="'getInTouch'" href="#getInTouch" @click="closeMenu"
+          >Get in touch</a
+        >
         <button class="button" @click="pledgeOpened = true">Pledge now</button>
       </div>
     </nav>
@@ -35,13 +42,20 @@
       <div class="container">
         <h2 class="heading">{{ pledgeContent.fields.title }}</h2>
         <figure>
-          <img :src="pledgeContent.fields.image.fields.file.url" :alt="pledgeContent.fields.image.fields.description">
-          <figcaption>{{ pledgeContent.fields.image.fields.description }}</figcaption>
+          <img
+            :src="pledgeContent.fields.image.fields.file.url"
+            :alt="pledgeContent.fields.image.fields.description"
+          />
+          <figcaption>
+            {{ pledgeContent.fields.image.fields.description }}
+          </figcaption>
         </figure>
         <div class="content">
           <RichTextRenderer :document="pledgeContent.fields.content" />
           <RichTextRenderer :document="pledge.fields.content" />
-          <button class="button" @click="pledgeOpened = true">Pledge now</button>
+          <button class="button" @click="pledgeOpened = true">
+            Pledge now
+          </button>
           <Modal :opened="pledgeOpened" @closed="pledgeOpened = false">
             <template #header>
               <h3>Make your pledge</h3>
@@ -58,7 +72,11 @@
     <section id="playlist" class="Playlists">
       <div class="container">
         <h2 class="heading">Listen</h2>
-        <Playlist v-for="playlist in playlists" :key="playlist.sys.id" :playlist="playlist">
+        <Playlist
+          v-for="playlist in playlists"
+          :key="playlist.sys.id"
+          :playlist="playlist"
+        >
           <RichTextRenderer :document="playlist.fields.content" />
         </Playlist>
       </div>
@@ -88,11 +106,15 @@ export default Vue.extend({
     RichTextRenderer,
   },
   async asyncData() {
-    const socialLinks = (await getClient().getEntries({ content_type: 'socialLinks' })).items
+    const socialLinks = (
+      await getClient().getEntries({ content_type: 'socialLinks' })
+    ).items
     const intro = await getClient().getEntry('2LeUyfp9edbEuOvBO1CCEQ')
     const pledgeContent = await getClient().getEntry('1Br2SVPNM0uxZjnRa9SCl4')
     const pledge = await getClient().getEntry('3DmtPWsvUUBrk4WZCzCxK3')
-    const playlists = (await getClient().getEntries({ content_type: 'playlist'})).items
+    const playlists = (
+      await getClient().getEntries({ content_type: 'playlist' })
+    ).items
     return { intro, pledge, pledgeContent, socialLinks, playlists }
   },
   data() {
@@ -102,10 +124,10 @@ export default Vue.extend({
     }
   },
   methods: {
-   makeHash: (value: string) => `#${value.toLowerCase()}`,
-   closeMenu () {
-     if (this.menuOpened) this.menuOpened = false
-   }
+    makeHash: (value: string) => `#${value.toLowerCase()}`,
+    closeMenu() {
+      if (this.menuOpened) this.menuOpened = false
+    },
   },
 })
 </script>
@@ -173,7 +195,7 @@ figure {
 }
 
 .Page::before {
-  content: "";
+  content: '';
   background: url(~/assets/images/cdd-poster.png) no-repeat center center/cover;
   height: 60vh;
 }
@@ -243,10 +265,10 @@ nav,
   .menu-toggle {
     display: none;
   }
-  
+
   .Pledge figure,
   .Pledge .content,
-  .Intro p:nth-of-type(-n+2) {
+  .Intro p:nth-of-type(-n + 2) {
     flex: 0 calc(50% - 1rem);
   }
 

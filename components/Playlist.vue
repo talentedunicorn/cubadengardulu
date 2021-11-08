@@ -1,10 +1,23 @@
 <template>
   <article class="Playlist">
     <h3 class="PlaylistTitle">{{ playlist.fields.title }}</h3>
-    <img class="PlaylistImage" :src="playlist.fields.cover.fields.file.url" :alt="playlist.fields.cover.fields.title"/>
+    <img
+      class="PlaylistImage"
+      :src="playlist.fields.cover.fields.file.url"
+      :alt="playlist.fields.cover.fields.title"
+    />
     <div class="PlaylistContent">
       <slot></slot>
-      <iframe v-show="iframeLoaded" :src="playlist.fields.link" width="100%" height="380" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class="PlaylistEmbed" @load="iframeLoaded = true"></iframe>
+      <iframe
+        v-show="iframeLoaded"
+        :src="playlist.fields.link"
+        width="100%"
+        height="380"
+        frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        class="PlaylistEmbed"
+        @load="iframeLoaded = true"
+      ></iframe>
     </div>
   </article>
 </template>
@@ -19,8 +32,8 @@ type TPlaylist = {
       fields: {
         file: { url: string }
         title: string
-      },
-    },
+      }
+    }
     link: string
     content: RichTextContent
   }
@@ -29,21 +42,21 @@ export default Vue.extend({
   props: {
     playlist: {
       type: Object as PropType<TPlaylist>,
-      default: {} as PropType<TPlaylist>
-    }
+      default: {} as PropType<TPlaylist>,
+    },
   },
   data() {
     return {
-      iframeLoaded: false
+      iframeLoaded: false,
     }
-  }
+  },
 })
 </script>
 
 <style scoped>
 .Playlist {
   display: grid;
-  grid-template-areas: "image" "title" "content";
+  grid-template-areas: 'image' 'title' 'content';
   gap: 2rem 4rem;
 }
 
@@ -66,7 +79,7 @@ export default Vue.extend({
 
 @media screen and (min-width: 60rem) {
   .Playlist {
-    grid-template-areas: "image title" "image content";
+    grid-template-areas: 'image title' 'image content';
     position: relative;
   }
 

@@ -3,7 +3,11 @@
     <Icons />
     <Nuxt />
     <transition name="slide-down">
-      <button v-show="showScrollTop" v-scrollTo="'top'" class="ScrollTop button">
+      <button
+        v-show="showScrollTop"
+        v-scrollTo="'top'"
+        class="ScrollTop button"
+      >
         <svg viewBox="0 0 24 24">
           <use xlink:href="#arrow-up"></use>
         </svg>
@@ -17,7 +21,7 @@ import Vue from 'vue'
 export default Vue.extend({
   data(): { showScrollTop: boolean } {
     return {
-      showScrollTop: false
+      showScrollTop: false,
     }
   },
   mounted() {
@@ -30,8 +34,8 @@ export default Vue.extend({
   methods: {
     handleScroll() {
       this.showScrollTop = window.scrollY > window.innerHeight
-    }
-  }
+    },
+  },
 })
 </script>
 

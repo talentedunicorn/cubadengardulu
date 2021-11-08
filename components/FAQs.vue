@@ -1,7 +1,17 @@
 <template>
   <dl class="FAQs">
-    <div v-for="(item, index) in faqs.items" :id="'#faq_' + index" :key="item.sys.id" :class="{ selected: selected === item.sys.id }" class="FAQ">
-      <dt v-scrollTo="'faq_' + index" class="FAQTitle" @click="selected = item.sys.id">
+    <div
+      v-for="(item, index) in faqs.items"
+      :id="'#faq_' + index"
+      :key="item.sys.id"
+      :class="{ selected: selected === item.sys.id }"
+      class="FAQ"
+    >
+      <dt
+        v-scrollTo="'faq_' + index"
+        class="FAQTitle"
+        @click="selected = item.sys.id"
+      >
         {{ item.fields.title }}
         <svg v-if="selected !== item.sys.id" viewBox="0 0 24 24">
           <use xlink:href="#arrow-down"></use>
@@ -31,18 +41,21 @@ interface FAQ {
 }
 export default Vue.extend({
   components: {
-    RichTextRenderer
+    RichTextRenderer,
   },
-  data(): { faqs: ContentfulCollection<Entry<FAQ>>, selected: string } {
+  data(): { faqs: ContentfulCollection<Entry<FAQ>>; selected: string } {
     return {
       faqs: {} as ContentfulCollection<Entry<FAQ>>,
-      selected: "",
+      selected: '',
     }
   },
   async fetch() {
-    this.faqs = (await getClient().getEntries({ content_type: 'faq', order: 'sys.updatedAt' }))
+    this.faqs = await getClient().getEntries({
+      content_type: 'faq',
+      order: 'sys.updatedAt',
+    })
     this.selected = this.faqs.items[0].sys.id
-  }
+  },
 })
 </script>
 <style scoped>

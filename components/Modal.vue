@@ -25,8 +25,8 @@ export default Vue.extend({
     opened: {
       type: Boolean,
       default: false,
-    }
-  }
+    },
+  },
 })
 </script>
 

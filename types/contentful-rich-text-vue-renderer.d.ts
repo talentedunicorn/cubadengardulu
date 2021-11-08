@@ -1,1 +1,1 @@
-declare module "contentful-rich-text-vue-renderer"
+declare module 'contentful-rich-text-vue-renderer'

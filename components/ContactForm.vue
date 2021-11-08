@@ -2,15 +2,15 @@
   <form class="form">
     <div>
       <label for="fullName">Full name</label>
-      <input id="fullName" type="text" required>
+      <input id="fullName" type="text" required />
     </div>
     <div>
       <label for="email">Email address</label>
-      <input id="email" type="email" required>
+      <input id="email" type="email" required />
     </div>
     <div>
       <label for="phone">Phone number (optional)</label>
-      <input id="phone" type="tel">
+      <input id="phone" type="tel" />
     </div>
     <div>
       <label for="message">Message</label>
@@ -31,7 +31,7 @@
     flex-wrap: wrap;
     align-items: flex-end;
   }
-  
+
   form > * {
     flex: calc((100% / 3) - 2rem);
   }
