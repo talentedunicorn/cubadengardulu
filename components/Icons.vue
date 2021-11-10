@@ -67,6 +67,11 @@
           fill="currentColor"
         />
       </symbol>
+      <symbol id="check">
+        <path
+          d="M9 16.172l10.594-10.594 1.406 1.406-12 12-5.578-5.578 1.406-1.406z"
+        ></path>
+      </symbol>
     </defs>
   </svg>
 </template>

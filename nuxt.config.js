@@ -46,6 +46,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios'
   ],
 
   // Environment variables
@@ -53,5 +54,6 @@ export default {
     CTF_SPACE_ID: process.env.CTF_SPACE_ID,
     CTF_ACCESS_TOKEN: process.env.CTF_ACCESS_TOKEN,
     CTF_PREVIEW_TOKEN: process.env.CTF_PREVIEW_TOKEN,
+    FORMSPREE_ENDPOINT: process.env.FORMSPREE_ENDPOINT,
   }
 }

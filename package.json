@@ -13,10 +13,12 @@
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
     "contentful": "^9.1.4",
     "contentful-rich-text-vue-renderer": "^2.0.1",
     "core-js": "^3.15.1",
-    "nuxt": "^2.15.7"
+    "nuxt": "^2.15.7",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",

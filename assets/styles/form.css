@@ -28,3 +28,7 @@ textarea:focus {
 .form > div {
   gap: 0.3em;
 }
+
+.form .error {
+  color: var(--red);
+}
