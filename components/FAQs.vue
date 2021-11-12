@@ -17,11 +17,9 @@
           <use xlink:href="#arrow-down"></use>
         </svg>
       </dt>
-      <transition name="slide-down" mode="in-out" :appear="true">
-        <dd v-show="selected === item.sys.id" class="FAQContent">
-          <RichTextRenderer :document="item.fields.answer" />
-        </dd>
-      </transition>
+      <dd v-show="selected === item.sys.id" class="FAQContent">
+        <RichTextRenderer :document="item.fields.answer" />
+      </dd>
     </div>
   </dl>
 </template>

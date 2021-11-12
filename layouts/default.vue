@@ -49,6 +49,6 @@ export default Vue.extend({
 }
 
 .ScrollTop svg {
-  inline-size: 2rem;
+  --icon-size: 2rem;
 }
 </style>

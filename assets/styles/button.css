@@ -27,3 +27,7 @@
   --button-color: var(--gray);
   --button-bg: var(--gray-light);
 }
+
+.button svg {
+  inline-size: var(--icon-size, 1rem);
+}

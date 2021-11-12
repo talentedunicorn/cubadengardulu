@@ -1,6 +1,6 @@
 <template>
   <div class="Page">
-    <nav>
+    <nav class="Nav">
       <div class="social">
         <a
           v-for="(social, index) in socialLinks"
@@ -72,13 +72,13 @@
     <section id="playlist" class="Playlists">
       <div class="container">
         <h2 class="heading">Listen</h2>
-        <Playlist
-          v-for="playlist in playlists"
-          :key="playlist.sys.id"
-          :playlist="playlist"
-        >
-          <RichTextRenderer :document="playlist.fields.content" />
-        </Playlist>
+        <Carousel :items="playlists">
+          <template #default="{ data }">
+            <Playlist :playlist="data">
+              <RichTextRenderer :document="data.fields.content" />
+            </Playlist>
+          </template>
+        </Carousel>
       </div>
     </section>
     <section id="faqs">
@@ -121,6 +121,7 @@ export default Vue.extend({
     return {
       menuOpened: false,
       pledgeOpened: false,
+      currentPlaylist: undefined,
     }
   },
   methods: {
@@ -136,30 +137,30 @@ export default Vue.extend({
 .Page,
 .container,
 figure,
-nav,
-nav > div,
+.Nav,
+.Nav > div,
 .social a {
   display: flex;
 }
 
 figure,
 .container,
-nav {
+.Nav {
   flex-wrap: wrap;
   gap: 2rem;
 }
 
-nav {
+.Nav {
   flex-wrap: wrap;
   justify-content: space-between;
   background: var(--white);
 }
 
-nav > div {
+.Nav > div {
   gap: 1rem;
 }
 
-nav a {
+.Nav a {
   text-decoration: none;
   padding: 1rem;
 }
@@ -169,7 +170,7 @@ nav a {
 }
 
 svg {
-  inline-size: var(--icon-size, 1.7rem);
+  inline-size: 1.7rem;
 }
 
 .Page,
@@ -204,14 +205,17 @@ figure {
   flex: 100%;
 }
 
-nav,
+.Nav,
 .menu {
   flex-flow: column;
 }
 
-.Page > section,
 .Intro .container {
-  padding: 2rem 2rem 4rem;
+  padding: 2rem;
+}
+
+.Page > section {
+  padding: 4rem 2rem;
 }
 
 .Intro {
@@ -251,6 +255,14 @@ nav,
   background: var(--blue);
 }
 
+.Playlists .container {
+  flex-flow: column;
+}
+
+.Contact {
+  background: var(--gray-light);
+}
+
 .ContactForm {
   flex: 0 60rem;
 }
@@ -272,13 +284,13 @@ nav,
     flex: 0 calc(50% - 1rem);
   }
 
-  nav,
+  .Nav,
   .menu {
     flex-flow: row;
     align-items: center;
   }
 
-  nav {
+  .Nav {
     position: sticky;
     top: 0;
     z-index: 3;

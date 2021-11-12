@@ -121,14 +121,11 @@ export default Vue.extend({
 }
 
 .success .button {
+  --icon-size: 1.5rem;
   align-self: flex-start;
   padding: 0;
   margin-left: auto;
   flex: 0;
-}
-
-.success .button svg {
-  inline-size: 1.5rem;
 }
 
 @media screen and (min-width: 60rem) {

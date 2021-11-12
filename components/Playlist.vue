@@ -80,6 +80,7 @@ export default Vue.extend({
 @media screen and (min-width: 60rem) {
   .Playlist {
     grid-template-areas: 'image title' 'image content';
+    grid-template-columns: 25rem 1fr;
     position: relative;
   }
 
