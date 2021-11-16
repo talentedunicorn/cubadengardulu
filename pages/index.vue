@@ -99,22 +99,23 @@
 <script lang="ts">
 import Vue from 'vue'
 import RichTextRenderer from 'contentful-rich-text-vue-renderer'
+import { ContentfulClientApi } from 'contentful'
 import { getClient } from '~/plugins/contentful'
 
 export default Vue.extend({
   components: {
     RichTextRenderer,
   },
-  async asyncData() {
+  async asyncData({ query }) {
+    const client: ContentfulClientApi = getClient(query.preview === 'true')
     const socialLinks = (
-      await getClient().getEntries({ content_type: 'socialLinks' })
+      await client.getEntries({ content_type: 'socialLinks' })
     ).items
-    const intro = await getClient().getEntry('2LeUyfp9edbEuOvBO1CCEQ')
-    const pledgeContent = await getClient().getEntry('1Br2SVPNM0uxZjnRa9SCl4')
-    const pledge = await getClient().getEntry('3DmtPWsvUUBrk4WZCzCxK3')
-    const playlists = (
-      await getClient().getEntries({ content_type: 'playlist' })
-    ).items
+    const intro = await client.getEntry('2LeUyfp9edbEuOvBO1CCEQ')
+    const pledgeContent = await client.getEntry('1Br2SVPNM0uxZjnRa9SCl4')
+    const pledge = await client.getEntry('3DmtPWsvUUBrk4WZCzCxK3')
+    const playlists = (await client.getEntries({ content_type: 'playlist' }))
+      .items
     return { intro, pledge, pledgeContent, socialLinks, playlists }
   },
   data() {

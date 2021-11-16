@@ -31,8 +31,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    "~/plugins/contentful.ts",
-    "~/plugins/scroll-to.ts"
+    { src: "~/plugins/contentful.ts" },
+    { src: "~/plugins/scroll-to.ts", mode: "client" },
+    { src: "~/plugins/preview.ts", mode: "client" },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
