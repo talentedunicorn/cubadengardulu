@@ -1,10 +1,9 @@
 export default {
-  // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
-
-  // Global page headers: https://go.nuxtjs.dev/config-head
+  pageTransition: 'slide-down',
   head: {
-    title: 'Cuba Dengar Dulu',
+    title: 'Pledge now',
+    titleTemplate: '%s — Cuba Dengar Dulu',
     htmlAttrs: {
       lang: 'en'
     },
@@ -18,8 +17,6 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-
-  // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     "~/assets/styles/reset.css",
     "~/assets/styles/fonts.css",
@@ -28,29 +25,20 @@ export default {
     "~/assets/styles/button.css",
     "~/assets/styles/transitions.css",
   ],
-
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: "~/plugins/contentful.ts" },
+    { src: "~/plugins/filters.ts" },
     { src: "~/plugins/scroll-to.ts", mode: "client" },
     { src: "~/plugins/preview.ts", mode: "client" },
   ],
-
-  // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
-
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
   ],
-
-  // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios'
   ],
-
-  // Environment variables
   env: {
     CTF_SPACE_ID: process.env.CTF_SPACE_ID,
     CTF_ACCESS_TOKEN: process.env.CTF_ACCESS_TOKEN,

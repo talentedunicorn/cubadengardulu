@@ -2,7 +2,7 @@
   <transition name="slide-down">
       <button
         v-show="showScrollTop"
-        v-scrollTo="scrollToId"
+        v-scroll-to:true="scrollToId"
         class="ScrollTop button"
       >
         <svg viewBox="0 0 24 24">
@@ -28,14 +28,15 @@ export default Vue.extend({
   },
   mounted() {
     // Attach scroll listener
-    window.addEventListener('scroll', this.handleScroll)
+    document.querySelector(`#${this.scrollToId}`)?.addEventListener('scroll', this.handleScroll)
   },
   beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll)
+    document.querySelector(`#${this.scrollToId}`)?.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
     handleScroll() {
-      this.showScrollTop = window.scrollY > window.innerHeight
+      const scrolledFromTop: number | undefined = document.querySelector(`#${this.scrollToId}`)?.scrollTop
+      this.showScrollTop = scrolledFromTop ? scrolledFromTop > window.innerHeight : false
     },
   },
 })
@@ -44,8 +45,8 @@ export default Vue.extend({
 <style scoped>
 .ScrollTop {
   position: fixed;
-  bottom: 1rem;
-  right: 1rem;
+  bottom: 2rem;
+  right: 2rem;
   padding: 0;
   z-index: 3;
 }

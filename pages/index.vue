@@ -1,26 +1,18 @@
 <template>
   <div class="Page">
-    <nav class="Nav">
-      <div class="social">
-        <a
-          v-for="(social, index) in socialLinks"
-          :key="index"
-          :href="social.fields.url"
-        >
-          <svg viewBox="0 0 24 25">
-            <use :xlink:href="makeHash(social.fields.title)"></use>
-          </svg>
-        </a>
-        <button class="button menu-toggle" @click="menuOpened = !menuOpened">
-          <svg viewBox="0 0 24 24">
-            <use v-if="menuOpened" xlink:href="#close"></use>
-            <use v-else xlink:href="#menu"></use>
-          </svg>
-        </button>
-      </div>
-
+    <aside class="Nav">
+      <Social />
+      <button class="button menu-toggle" @click="menuOpened = !menuOpened">
+        <svg viewBox="0 0 24 24">
+          <use v-if="menuOpened" xlink:href="#close"></use>
+          <use v-else xlink:href="#menu"></use>
+        </svg>
+      </button>
       <div :class="{ opened: menuOpened }" class="menu">
         <a v-scrollTo="'faqs'" href="#faqs" @click="closeMenu">FAQs</a>
+        <NuxtLink to="/blog">
+          Read stories
+        </NuxtLink>
         <a v-scrollTo="'playlist'" href="#playlist" @click="closeMenu"
           >Listen</a
         >
@@ -29,7 +21,7 @@
         >
         <button class="button" @click="pledgeOpened = true">Pledge now</button>
       </div>
-    </nav>
+    </aside>
 
     <section class="Intro">
       <div class="container">
@@ -108,15 +100,12 @@ export default Vue.extend({
   },
   async asyncData({ query }) {
     const client: ContentfulClientApi = getClient(query.preview === 'true')
-    const socialLinks = (
-      await client.getEntries({ content_type: 'socialLinks' })
-    ).items
     const intro = await client.getEntry('2LeUyfp9edbEuOvBO1CCEQ')
     const pledgeContent = await client.getEntry('1Br2SVPNM0uxZjnRa9SCl4')
     const pledge = await client.getEntry('3DmtPWsvUUBrk4WZCzCxK3')
     const playlists = (await client.getEntries({ content_type: 'playlist' }))
       .items
-    return { intro, pledge, pledgeContent, socialLinks, playlists }
+    return { intro, pledge, pledgeContent, playlists }
   },
   data() {
     return {
@@ -126,7 +115,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    makeHash: (value: string) => `#${value.toLowerCase()}`,
     closeMenu() {
       if (this.menuOpened) this.menuOpened = false
     },
@@ -139,7 +127,7 @@ export default Vue.extend({
 .container,
 figure,
 .Nav,
-.Nav > div,
+.menu,
 .social a {
   display: flex;
 }
@@ -155,15 +143,17 @@ figure,
   flex-wrap: wrap;
   justify-content: space-between;
   background: var(--white);
-}
-
-.Nav > div {
-  gap: 1rem;
+  padding: 0 1rem;
 }
 
 .Nav a {
   text-decoration: none;
   padding: 1rem;
+}
+
+.menu {
+  flex-flow: column;
+  flex: 100%;
 }
 
 .menu .button {
@@ -204,11 +194,6 @@ figure {
 
 .heading {
   flex: 100%;
-}
-
-.Nav,
-.menu {
-  flex-flow: column;
 }
 
 .Intro .container {
@@ -285,10 +270,10 @@ figure {
     flex: 0 calc(50% - 1rem);
   }
 
-  .Nav,
   .menu {
     flex-flow: row;
     align-items: center;
+    flex: 0 auto;
   }
 
   .Nav {
