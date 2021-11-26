@@ -79,6 +79,12 @@
         <FAQs />
       </div>
     </section>
+    <section class="Gallery">
+      <div class="container">
+        <h2 class="heading">Merdeka means freedom</h2>
+        <Gallery />
+      </div>
+    </section>
     <section id="getInTouch" class="Contact">
       <div class="container">
         <h2 class="heading">Get in touch</h2>
@@ -237,7 +243,8 @@ figure {
   padding: 2rem 1rem;
 }
 
-.Playlists {
+.Playlists,
+.Gallery {
   background: var(--blue);
 }
 
