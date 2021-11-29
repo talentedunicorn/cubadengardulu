@@ -68,8 +68,8 @@ export default Vue.extend({
   align-items: center;
   padding: 1rem;
   border-bottom: 0.2em solid var(--gray-light);
-  position: sticky;
-  top: 0;
+  /* position: sticky;
+  top: 0; */
 }
 
 .ModalBody {

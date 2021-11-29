@@ -39,10 +39,14 @@ export default {
   modules: [
     '@nuxtjs/axios'
   ],
+  axios: {
+    baseURL: process.env.BASE_URL,
+  },
   env: {
     CTF_SPACE_ID: process.env.CTF_SPACE_ID,
     CTF_ACCESS_TOKEN: process.env.CTF_ACCESS_TOKEN,
     CTF_PREVIEW_TOKEN: process.env.CTF_PREVIEW_TOKEN,
     FORMSPREE_ENDPOINT: process.env.FORMSPREE_ENDPOINT,
+    PLEDGE_LIMIT: process.env.PLEDGE_LIMIT,
   }
 }

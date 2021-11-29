@@ -45,18 +45,11 @@
         <div class="content">
           <RichTextRenderer :document="pledgeContent.fields.content" />
           <RichTextRenderer :document="pledge.fields.content" />
-          <button class="button" @click="pledgeOpened = true">
-            Pledge now
-          </button>
-          <Modal :opened="pledgeOpened" @closed="pledgeOpened = false">
-            <template #header>
-              <h3>Make your pledge</h3>
-            </template>
-            <div class="PledgeForm">
+          <client-only>
+            <Pledge>
               <RichTextRenderer :document="pledge.fields.content" />
-              <PledgeForm @submitted="pledgeOpened = false" />
-            </div>
-          </Modal>
+            </Pledge>
+          </client-only>
         </div>
       </div>
     </section>
@@ -81,7 +74,7 @@
     </section>
     <section class="Gallery">
       <div class="container">
-        <h2 class="heading">Merdeka means freedom</h2>
+        <h2 class="heading">Gallery</h2>
         <Gallery />
       </div>
     </section>
@@ -116,7 +109,6 @@ export default Vue.extend({
   data() {
     return {
       menuOpened: false,
-      pledgeOpened: false,
       currentPlaylist: undefined,
     }
   },
@@ -237,10 +229,6 @@ figure {
   background: var(--white);
   border-radius: 2rem;
   align-self: flex-start;
-}
-
-.PledgeForm {
-  padding: 2rem 1rem;
 }
 
 .Playlists,
