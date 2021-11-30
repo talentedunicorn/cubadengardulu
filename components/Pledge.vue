@@ -13,9 +13,64 @@
       <template #header>
         <h3>Make your pledge</h3>
       </template>
-      <div class="PledgeForm">
+      <div v-if="pledge.fullName" class="Thankyou">
+        <h3>Thanks {{ pledge.fullName }}, for your pledge!</h3>
+      </div>
+      <div v-else class="PledgeForm">
         <slot></slot>
-        <PledgeForm @submitted="pledgeOpened = false" />
+        <form class="form" @submit.prevent="submit">
+          <div :class="{ hasError: error.path === 'fullName'}">
+            <label for="fullName">Full name</label>
+            <input id="fullName" v-model="pledgeForm.fullName" type="text" required />
+          </div>
+          <div :class="{ hasError: error.path === 'phone'}">
+            <label for="phone">Phone number</label>
+            <input id="phone" v-model="pledgeForm.phone" type="tel" required />
+          </div>
+          <div :class="{ hasError: error.path === 'email'}">
+            <label for="email">Email address</label>
+            <input id="email" v-model="pledgeForm.email" type="email" required />
+          </div>
+          <div :class="{ hasError: error.path === 'dateOfBirth'}">
+            <label for="dateOfBirth">Date of birth</label>
+            <input id="dateOfBirth" v-model="pledgeForm.dateOfBirth" type="date" required />
+          </div>
+          <div :class="{ hasError: error.path === 'address'}">
+            <label for="address">Address</label>
+            <input id="address" v-model="pledgeForm.address" type="text" />
+          </div>
+          <div :class="{ hasError: error.path === 'address2'}">
+            <label for="address2">Address2</label>
+            <input id="address2" v-model="pledgeForm.address2" type="text" />
+          </div>
+          <div :class="{ hasError: error.path === 'postCode'}">
+            <label for="postCode">Postcode</label>
+            <input id="postCode" v-model="pledgeForm.postCode" type="text" />
+          </div>
+          <div :class="{ hasError: error.path === 'city'}">
+            <label for="city">City</label>
+            <input id="city" v-model="pledgeForm.city" type="text" />
+          </div>
+          <div :class="{ hasError: error.path === 'state'}">
+            <label for="state">State</label>
+            <input id="state" v-model="pledgeForm.state" type="text" />
+          </div>
+          <div :class="{ hasError: error.path === 'tshirtSize'}">
+            <h4>T-shirt size</h4>
+            <div v-for="size in sizes" :key="size" class="radio">
+              <input :id="size" v-model="pledgeForm.tshirtSize" type="radio" name="tshirtSize" :value="size">
+              <label :for="size">{{ size.toUpperCase() }}</label>
+            </div>
+          </div>
+
+          <transition name="slide-up">
+            <span v-if="error.message" class="FormError" @click="error = {}">
+              {{ error.message }}
+            </span>
+          </transition>
+
+          <button class="button" type="submit" :disabled="submitting">Submit</button>
+        </form>
       </div>
     </Modal>
   </div>
@@ -23,6 +78,21 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import * as yup from 'yup'
+const sizes = ['s', 'm', 'l', 'xl', 'xxl', 'xxxl']
+const pledgeSchema = yup.object({
+  fullName: yup.string().required(),
+  phone: yup.string().required(),
+  email: yup.string().email().required(),
+  dateOfBirth: yup.date().required(),
+  address: yup.string().required(),
+  address2: yup.string(),
+  postCode: yup.string().matches(/[0-9]/, 'Invalid postcode').required(),
+  city: yup.string().required(),
+  state: yup.string().required(),
+  tshirtSize: yup.mixed().oneOf(sizes).required()
+})
+
 const maxPledges: number = parseInt(process.env.PLEDGE_LIMIT || '0', 10);
 
 export default Vue.extend({
@@ -31,15 +101,60 @@ export default Vue.extend({
       maxPledges,
       pledgeCount: 0,
       pledgeOpened: false,
+      submitting: false,
+      pledge: {},
+      sizes,
+      error: {},
+      pledgeForm: {
+        fullName: '',
+        phone: '',
+        email: '',
+        dateOfBirth: '',
+        address: '',
+        address2: '',
+        postCode: '',
+        city: '',
+        state: '',
+        tshirtSize: '',
+      }
     }
   },
   async fetch() {
     this.pledgeCount = (await this.$axios.get(`/api/pledges`)).data.total
   },
+  methods: {
+    openForm() {
+      this.pledgeOpened = true
+    },
+    submit() {
+      this.submitting = true;
+      this.error = {};
+      pledgeSchema.validate(this.pledgeForm)
+        .then(() => {
+          this.$axios.post(`/api/pledges`, { ...this.pledgeForm, dateOfBirth: new Date(this.pledgeForm.dateOfBirth), postCode: parseInt(this.pledgeForm.postCode) })
+          .then(({ pledge }: any) => {
+            this.pledge = pledge
+          })
+          .catch((e: any) => {
+            this.error = { path: '', ...e.response.data }
+          })
+        })
+        .catch((e: any) => {
+          this.error = {
+            message: e.message,
+            path: e.path,
+          }
+        })
+        .finally(() => {
+          this.submitting = false;
+        })
+    }
+  }
 })
 </script>
 
 <style scoped>
+.Thankyou,
 .PledgeForm {
   padding: 2rem 1rem;
 }
@@ -49,5 +164,23 @@ export default Vue.extend({
   display: flex;
   flex-flow: column;
   gap: 0.5rem;
+}
+
+.FormError {
+  position: sticky;
+  bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--red);
+  color: var(--white);
+}
+
+.hasError h4,
+.hasError > label {
+  color: var(--red);
+}
+
+.hasError input {
+  --shadow: var(--red);
 }
 </style>

@@ -10,20 +10,24 @@ export default async (req: VercelRequest, res: VercelResponse) => {
       const total = await prisma.pledge.count()
       res.json({ total })
     } catch(err) {
-      console.error(err)
+      res.status(500)
     }
   }
 
   // POST /pledges
   if (req.method === 'POST') {
     const newPledge = req.body;
-    if (!newPledge) return res.status(400)
+    if (!newPledge) return res.status(400).send('')
 
     try {
-      // const pledge = await prisma.pledge.create(newPledge)
-      res.json({ newPledge })
+      const pledge = await prisma.pledge.create({ data: newPledge })
+      res.json({ pledge })
     } catch(err) {
-      console.error(err)
+      let error;
+      if (err.code === 'P2002') { // Unique constraint error
+        error = { message: 'Sorry, you can only pledge once' }
+      }
+      res.status(500).json(error)
     }
   }
 }

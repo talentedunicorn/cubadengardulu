@@ -19,7 +19,7 @@
         <a v-scrollTo="'getInTouch'" href="#getInTouch" @click="closeMenu"
           >Get in touch</a
         >
-        <button class="button" @click="pledgeOpened = true">Pledge now</button>
+        <button class="button" @click="openPledge">Pledge now</button>
       </div>
     </aside>
 
@@ -46,7 +46,7 @@
           <RichTextRenderer :document="pledgeContent.fields.content" />
           <RichTextRenderer :document="pledge.fields.content" />
           <client-only>
-            <Pledge>
+            <Pledge ref="pledge">
               <RichTextRenderer :document="pledge.fields.content" />
             </Pledge>
           </client-only>
@@ -116,6 +116,9 @@ export default Vue.extend({
     closeMenu() {
       if (this.menuOpened) this.menuOpened = false
     },
+    openPledge() {
+      (this.$refs.pledge! as any).openForm()
+    }
   },
 })
 </script>
