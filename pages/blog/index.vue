@@ -2,7 +2,7 @@
   <main class="blog">
     <div class="container">
       <ol class="article_list">
-        <li v-for="article in articles" :key="article.sys.id" class="article">
+        <li v-for="article in articles" :key="article.sys.id" class="article" :style="{ '--bg': `url(${article.fields.cover.fields.file.url})` }">
           <NuxtLink :to="'/blog/' + article.sys.id">{{ article.fields.title }}</NuxtLink>
           <span>Published on <time :datetime="article.sys.updatedAt">{{ article.sys.updatedAt | formatDate }}</time></span>
         </li>
@@ -56,6 +56,14 @@ export default Vue.extend({
   gap: 1rem;
   padding: 1rem;
   border-radius: 1rem;
+  position: relative;
+}
+
+.article::before {
+  content: '';
+  flex: 10rem;
+  background: var(--bg, var(--gray-light)) no-repeat top center/cover;
+  border-radius: inherit;
 }
 
 .article:hover {
@@ -64,6 +72,13 @@ export default Vue.extend({
 
 .article a {
   font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.article a::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
 }
 
 @media screen and (min-width: 40rem) {
