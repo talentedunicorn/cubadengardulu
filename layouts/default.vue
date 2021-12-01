@@ -3,6 +3,7 @@
     <Icons />
     <Nuxt />
     <ScrollToTop scroll-to-id="top" />
+    <Footer />
   </main>
 </template>
 

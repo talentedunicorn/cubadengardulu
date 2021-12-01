@@ -126,14 +126,12 @@ export default Vue.extend({
 <style scoped>
 .Page,
 .container,
-figure,
 .Nav,
 .menu,
 .social a {
   display: flex;
 }
 
-figure,
 .container,
 .Nav {
   flex-wrap: wrap;
@@ -152,8 +150,13 @@ figure,
   padding: 1rem;
 }
 
-.menu {
+.Page,
+.menu,
+.Playlists .container {
   flex-flow: column;
+}
+
+.menu {
   flex: 100%;
 }
 
@@ -163,11 +166,6 @@ figure,
 
 svg {
   inline-size: 1.7rem;
-}
-
-.Page,
-figure {
-  flex-flow: column;
 }
 
 .social {
@@ -237,10 +235,6 @@ figure {
 .Playlists,
 .Gallery {
   background: var(--blue);
-}
-
-.Playlists .container {
-  flex-flow: column;
 }
 
 .Contact {

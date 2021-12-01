@@ -23,6 +23,7 @@
       <Nuxt />
       <Social class="social" />
       <ScrollToTop scroll-to-id="top"/>
+      <Footer />
     </div>
   </main>
 </template>
@@ -73,6 +74,10 @@ export default Vue.extend({
   transform: rotate(180deg);
 }
 
+.side a {
+  text-decoration: none;
+}
+
 
 [aria-current="page"] {
   color: var(--gray);
@@ -109,7 +114,6 @@ export default Vue.extend({
   flex: 1;
   flex-flow: column;
   overflow-y: auto;
-  padding-bottom: 6rem;
 }
 
 @media screen and (min-width: 60rem) {
