@@ -1,6 +1,10 @@
 <template>
   <section class="Carousel">
-    <slot :data="item" />
+    <transition-group name="slide-up" appear>
+    <div v-for="item in items" v-show="item === current" :key="item.sys.id">
+      <slot :data="item" />
+    </div>
+    </transition-group>
     <nav v-if="items.length > 1">
       <button class="button" @click="previous">
         <svg viewBox="0 0 24 24">
@@ -31,9 +35,6 @@ export default Vue.extend({
     }
   },
   computed: {
-    item() {
-      return this.items.find((i) => i === this.current)
-    },
     itemIndex() {
       return this.items.findIndex((i: any) => i === this.current)
     },

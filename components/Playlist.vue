@@ -81,7 +81,9 @@ export default Vue.extend({
   .Playlist {
     grid-template-areas: 'image title' 'image content';
     grid-template-columns: 25rem 1fr;
+    grid-auto-rows: max-content;
     position: relative;
+    min-height: 80vh;
   }
 
   .PlaylistImage {
