@@ -95,17 +95,7 @@ export default Vue.extend({
 }
 
 .article_content figure {
-  margin: 3rem 0; 
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.article_content figcaption {
-  padding: 1rem;
-  color: var(--gray);
-  font-size: 1rem;
+  margin: 3rem 0;
 }
 
 .article_cover {

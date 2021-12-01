@@ -5,16 +5,16 @@
     </button>
     <transition name="slide-down">
       <label v-if="!$fetchState.pending" class="PledgeProgress">
-        <progress :value="pledgeCount" :max="maxPledges"></progress>
+        <progress :value="pledgeCount" :max="maxPledges" :style="{ '--progress-value': `${(pledgeCount / maxPledges) * 100}%`}"></progress>
         {{ pledgeCount }} pledges made
       </label>
     </transition>
-    <Modal :opened="pledgeOpened" @closed="pledgeOpened = false">
+    <Modal :opened="pledgeOpened" @closed="close">
       <template #header>
         <h3>Make your pledge</h3>
       </template>
       <div v-if="pledge.fullName" class="Thankyou">
-        <h3>Thanks {{ pledge.fullName }}, for your pledge!</h3>
+        <h3>Thank you {{ pledge.fullName }}, for pledging!</h3>
       </div>
       <div v-else class="PledgeForm">
         <slot></slot>
@@ -95,17 +95,7 @@ const pledgeSchema = yup.object({
 
 const maxPledges: number = parseInt(process.env.PLEDGE_LIMIT || '0', 10);
 
-export default Vue.extend({
-  data() {
-    return {
-      maxPledges,
-      pledgeCount: 0,
-      pledgeOpened: false,
-      submitting: false,
-      pledge: {},
-      sizes,
-      error: {},
-      pledgeForm: {
+const pledgeFormDefault = () => ({
         fullName: '',
         phone: '',
         email: '',
@@ -116,7 +106,19 @@ export default Vue.extend({
         city: '',
         state: '',
         tshirtSize: '',
-      }
+      })
+
+export default Vue.extend({
+  data() {
+    return {
+      maxPledges,
+      pledgeCount: 0,
+      pledgeOpened: false,
+      submitting: false,
+      pledge: {},
+      sizes,
+      error: {},
+      pledgeForm: pledgeFormDefault()
     }
   },
   async fetch() {
@@ -125,6 +127,11 @@ export default Vue.extend({
   methods: {
     openForm() {
       this.pledgeOpened = true
+    },
+    close() {
+      this.pledge = {}
+      this.pledgeOpened = false
+      this.pledgeForm = pledgeFormDefault()
     },
     submit() {
       this.submitting = true;
@@ -164,6 +171,28 @@ export default Vue.extend({
   display: flex;
   flex-flow: column;
   gap: 0.5rem;
+}
+
+.PledgeProgress progress {
+  position: relative;
+}
+
+.PledgeProgress progress::before,
+.PledgeProgress progress::after {
+  content: '';
+  position: absolute;
+  border-radius: 0.5rem;
+  top: 0; left: 0; bottom: 0;
+}
+
+.PledgeProgress progress::before {
+  right: 0;
+  background: var(--gray-light);
+}
+
+.PledgeProgress progress::after {
+  background: var(--blue-dark);
+  width: var(--progress-value);
 }
 
 .FormError {

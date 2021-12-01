@@ -34,6 +34,19 @@ p {
   margin-bottom: 0.5em;
 }
 
+figure {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+figcaption {
+  padding: 1rem;
+  color: var(--gray);
+  font-size: 1rem;
+}
+
 .visually-hidden {
   position: absolute;
   clip: rect(0 0 0 0);

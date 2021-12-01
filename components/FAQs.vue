@@ -18,7 +18,13 @@
         </svg>
       </dt>
       <dd v-show="selected === item.sys.id" class="FAQContent">
-        <RichTextRenderer :document="item.fields.answer" />
+        <div>
+          <RichTextRenderer :document="item.fields.answer" />
+        </div>
+        <figure v-if="item.fields.image" >
+          <img :src="item.fields.image.fields.file.url" :alt="item.fields.image.fields.title" />
+          <figcaption v-if="item.fields.image.fields.description">{{ item.fields.image.fields.description }}</figcaption>
+        </figure>
       </dd>
     </div>
   </dl>
@@ -103,5 +109,23 @@ export default Vue.extend({
 
 .FAQContent {
   padding: 0 1rem;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  gap: 2rem;
 }
+
+.FAQContent figure {
+  flex: 1;
+}
+
+.FAQContent img {
+  border-radius: 0.5rem;
+}
+
+@media screen and (min-width: 60rem) {
+  .FAQContent > div {
+    flex: 0 60% ;
+  }
+}
+
 </style>
