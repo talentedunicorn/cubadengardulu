@@ -90,7 +90,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import RichTextRenderer from 'contentful-rich-text-vue-renderer'
-import { ContentfulClientApi } from 'contentful'
+import { ContentfulClientApi, Entry } from 'contentful'
 import { getClient } from '~/plugins/contentful'
 
 export default Vue.extend({
@@ -102,8 +102,8 @@ export default Vue.extend({
     const intro = await client.getEntry('2LeUyfp9edbEuOvBO1CCEQ')
     const pledgeContent = await client.getEntry('1Br2SVPNM0uxZjnRa9SCl4')
     const pledge = await client.getEntry('3DmtPWsvUUBrk4WZCzCxK3')
-    const playlists = (await client.getEntries({ content_type: 'playlist' }))
-      .items
+    const playlists = (await client.getEntry('2t0hiFPmnXeUghTnOkFskW') as Entry<any>)
+      .fields.items
     return { intro, pledge, pledgeContent, playlists }
   },
   data() {

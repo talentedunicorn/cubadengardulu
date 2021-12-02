@@ -1,7 +1,7 @@
 <template>
   <pre v-if="$fetchState.pending">Loading gallery...</pre>
   <ol v-else class="gallery">
-    <li v-for="item in gallery.items" :key="item.sys.id" class="gallery_item">
+    <li v-for="item in gallery" :key="item.sys.id" class="gallery_item">
       <a :href="item.fields.link">
         <img :src="item.fields.image.fields.file.url" :alt="item.fields.image.fields.title">
       </a>
@@ -20,10 +20,7 @@ export default Vue.extend({
     }
   },
   async fetch() {
-    this.gallery = await getClient().getEntries({
-      content_type: 'galleryItem',
-      order: 'sys.updatedAt'
-    })
+    this.gallery = (await getClient().getEntry('jsHkX7w53QgH0oWk0I4Xo') as Entry<any>).fields.items
   }
 })
 </script>

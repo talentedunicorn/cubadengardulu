@@ -54,10 +54,7 @@ export default Vue.extend({
     }
   },
   async fetch() {
-    this.faqs = await getClient().getEntries({
-      content_type: 'faq',
-      order: 'sys.updatedAt',
-    })
+    this.faqs = (await getClient().getEntry('2boIQq9r3ln0iLGjquWg0D') as Entry<any>).fields
     this.selected = this.faqs.items[0].sys.id
   },
 })
