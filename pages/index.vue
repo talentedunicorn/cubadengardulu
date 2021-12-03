@@ -9,16 +9,16 @@
         </svg>
       </button>
       <div :class="{ opened: menuOpened }" class="menu">
-        <a v-scrollTo="'faqs'" href="#faqs" @click="closeMenu">FAQs</a>
-        <NuxtLink to="/blog">
-          Read stories
-        </NuxtLink>
         <a v-scrollTo="'playlist'" href="#playlist" @click="closeMenu"
           >Listen</a
         >
+        <a v-scrollTo="'faqs'" href="#faqs" @click="closeMenu">FAQs</a>
         <a v-scrollTo="'getInTouch'" href="#getInTouch" @click="closeMenu"
           >Get in touch</a
         >
+        <NuxtLink to="/blog">
+          Read stories
+        </NuxtLink>
         <button class="button" @click="openPledge">Pledge now</button>
       </div>
     </aside>
@@ -80,8 +80,11 @@
     </section>
     <section id="getInTouch" class="Contact">
       <div class="container">
-        <h2 class="heading">Get in touch</h2>
+        <h2 class="heading">{{ contact.fields.title }}</h2>
         <ContactForm class="ContactForm" />
+        <figure>
+          <img :src="contact.fields.image.fields.file.url" :alt="contact.fields.image.fields.title">
+        </figure>
       </div>
     </section>
   </div>
@@ -100,11 +103,12 @@ export default Vue.extend({
   async asyncData({ query }) {
     const client: ContentfulClientApi = getClient(query.preview === 'true')
     const intro = await client.getEntry('2LeUyfp9edbEuOvBO1CCEQ')
-    const pledgeContent = await client.getEntry('1Br2SVPNM0uxZjnRa9SCl4')
     const pledge = await client.getEntry('3DmtPWsvUUBrk4WZCzCxK3')
+    const contact = await client.getEntry('2msZyDJT8jzQ26M5y1fZ2Y')
+    const pledgeContent = await client.getEntry('1Br2SVPNM0uxZjnRa9SCl4')
     const playlists = (await client.getEntry('2t0hiFPmnXeUghTnOkFskW') as Entry<any>)
       .fields.items
-    return { intro, pledge, pledgeContent, playlists }
+    return { intro, pledge, pledgeContent, playlists, contact }
   },
   data() {
     return {
@@ -241,8 +245,20 @@ svg {
   background: var(--gray-light);
 }
 
+.Contact .container {
+  gap: 3rem;
+}
+
 .ContactForm {
-  flex: 0 60rem;
+  flex: 100%;
+}
+
+.Contact figure {
+  flex: auto;
+}
+
+.Contact img {
+  border-radius: 0.5rem;
 }
 
 @media screen and (max-width: 60rem) {
@@ -272,6 +288,11 @@ svg {
     position: sticky;
     top: 0;
     z-index: 3;
+  }
+
+  .ContactForm {
+    flex: 0 50rem;
+    align-self: flex-start;
   }
 }
 </style>

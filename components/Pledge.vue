@@ -57,6 +57,7 @@
           </div>
           <div :class="{ hasError: error.path === 'tshirtSize'}">
             <h4>T-shirt size</h4>
+            <p>If you would like to recieve a t-shirt, pick a size</p>
             <div v-for="size in sizes" :key="size" class="radio">
               <input :id="size" v-model="pledgeForm.tshirtSize" type="radio" name="tshirtSize" :value="size">
               <label :for="size">{{ size.toUpperCase() }}</label>
@@ -82,15 +83,15 @@ import * as yup from 'yup'
 const sizes = ['s', 'm', 'l', 'xl', 'xxl', 'xxxl']
 const pledgeSchema = yup.object({
   fullName: yup.string().required(),
-  phone: yup.string().required(),
+  phone: yup.string().matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/, 'Invalid phone number').required(),
   email: yup.string().email().required(),
   dateOfBirth: yup.date().required(),
   address: yup.string().required(),
   address2: yup.string(),
-  postCode: yup.string().matches(/[0-9]/, 'Invalid postcode').required(),
+  postCode: yup.string().matches(/^[0-9]{5}/, 'Invalid postcode').required(),
   city: yup.string().required(),
   state: yup.string().required(),
-  tshirtSize: yup.mixed().oneOf(sizes).required()
+  tshirtSize: yup.mixed().oneOf(sizes, 'Select a t-shirt size').required()
 })
 
 const maxPledges: number = parseInt(process.env.PLEDGE_LIMIT || '0', 10);
@@ -141,6 +142,7 @@ export default Vue.extend({
           this.$axios.post(`/api/pledges`, { ...this.pledgeForm, dateOfBirth: new Date(this.pledgeForm.dateOfBirth), postCode: parseInt(this.pledgeForm.postCode) })
           .then(({ pledge }: any) => {
             this.pledge = pledge
+            this.$fetch()
           })
           .catch((e: any) => {
             this.error = { path: '', ...e.response.data }
@@ -175,6 +177,7 @@ export default Vue.extend({
 
 .PledgeProgress progress {
   position: relative;
+  width: 100%;
 }
 
 .PledgeProgress progress::before,

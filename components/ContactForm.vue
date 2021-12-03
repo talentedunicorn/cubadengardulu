@@ -13,27 +13,27 @@
       </button>
     </p>
     <form v-else class="form" @submit.prevent="submit">
-      <div>
-        <label for="fullName">Full name</label>
+      <div class="full">
+        <label for="fullName" :class="{error: errors.fullName}">Full name</label>
         <input id="fullName" v-model="data.fullName" type="text" required />
       </div>
       <div>
-        <label for="email">Email address</label>
+        <label for="email" :class="{error: errors.email}">Email address</label>
         <input id="email" v-model="data.email" type="email" required />
       </div>
       <div>
-        <label for="phone">Phone number (optional)</label>
+        <label for="phone" :class="{error: errors.phone}">Phone number (optional)</label>
         <input id="phone" v-model="data.phone" type="tel" />
       </div>
-      <div>
-        <label for="message">Message</label>
+      <div class="full">
+        <label for="message" :class="{error: errors.message}">Message</label>
         <textarea id="message" v-model="data.message" rows="3"></textarea>
-        <span
-          v-if="errors.message"
-          class="error"
-          v-text="errors.message"
-        ></span>
       </div>
+      <span
+          v-if="Object.keys(errors).length"
+          class="error-message"
+          v-text="Object.values(errors)[0]"
+        ></span>
       <button
         class="button"
         type="submit"
@@ -52,7 +52,7 @@ import { OptionalObjectSchema } from 'yup/lib/object'
 const schema: OptionalObjectSchema<any> = yup.object({
   fullName: yup.string().required(),
   email: yup.string().email().required(),
-  phone: yup.string(),
+  phone: yup.string().matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/, 'Invalid phone number'),
   message: yup.string().required(),
 })
 const defaultData = {
@@ -101,12 +101,17 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.form {
+  position: relative;
+}
+
 .button {
   flex: 1;
 }
 
 .success {
   display: flex;
+  align-items: center;
   gap: 1rem;
   flex: 100%;
   background: var(--gray-light);
@@ -116,7 +121,7 @@ export default Vue.extend({
 }
 
 .success > svg {
-  inline-size: 1.3rem;
+  inline-size: var(--success-icon-size, 6rem);
   fill: var(--blue-dark);
 }
 
@@ -128,19 +133,37 @@ export default Vue.extend({
   flex: 0;
 }
 
+.error-message {
+  padding: 0.5rem 1rem;
+  position: sticky;
+  bottom: 1rem;
+  background: var(--red);
+  color: var(--white);
+  border-radius: 0.5rem;
+}
+
 @media screen and (min-width: 60rem) {
-  form {
+  .form {
     flex-flow: row;
     flex-wrap: wrap;
     align-items: flex-end;
   }
 
-  form > * {
-    flex: calc((100% / 3) - 2rem);
+  .form > * {
+    flex: calc((100% / 2) - 2rem);
+  }
+
+  .success {
+    --success-icon-size: 2rem;
+  }
+
+  .full {
+    flex: 100%;
   }
 
   .button {
-    flex: 0 calc((100% / 3) - 2rem);
+    flex: 0;
+    margin-left: auto;
   }
 }
 </style>
