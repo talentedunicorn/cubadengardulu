@@ -3,7 +3,7 @@
     <Icons />
     <aside class="side">
       <transition name="slide-from-left">
-      <nav v-show="menuOpened" data-title="Read our stories">
+      <nav v-show="menuOpened" aria-label="Read our stories">
         <NuxtLink to="/">
           Home
         </NuxtLink>
@@ -12,8 +12,8 @@
         </NuxtLink>
       </nav>
       </transition>
-      <button class="button side-toggle" @click="menuOpened = !menuOpened">
-        <svg viewBox="0 0 24 24">
+      <button class="button side-toggle" aria-label="Toggle menu" @click="menuOpened = !menuOpened">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
             <use v-if="menuOpened" xlink:href="#arrow-left"></use>
             <use v-else xlink:href="#arrow-right"></use>
           </svg>
@@ -66,7 +66,7 @@ export default Vue.extend({
 }
 
 .side nav::after {
-  content: attr(data-title);
+  content: attr(aria-label);
   font-family: var(--font-alt);
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -94,7 +94,7 @@ export default Vue.extend({
 }
 
 .side-toggle:hover {
-  --button-bg: var(--black);
+  --button-bg: var(--blue-dark);
   --button-color: var(--white);
 }
 

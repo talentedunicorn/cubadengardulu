@@ -4,8 +4,9 @@
       v-for="(social, index) in socials"
       :key="index"
       :href="social.fields.url"
+      :aria-label="social.fields.title"
     >
-      <svg viewBox="0 0 24 25">
+      <svg viewBox="0 0 24 25" aria-hidden="true">
         <use :xlink:href="social.fields.title | makeHash"></use>
       </svg>
     </a>

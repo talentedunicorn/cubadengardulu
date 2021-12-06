@@ -5,14 +5,14 @@
       <slot :data="item" />
     </div>
     </transition-group>
-    <nav v-if="items.length > 1">
-      <button class="button" @click="previous">
-        <svg viewBox="0 0 24 24">
+    <nav v-if="items.length > 1" aria-label="Carousel navigation">
+      <button class="button" aria-label="Previous" @click="previous">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <use xlink:href="#arrow-left"></use>
         </svg>
       </button>
-      <button class="button" @click="next">
-        <svg viewBox="0 0 24 24">
+      <button class="button" aria-label="Next" @click="next">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <use xlink:href="#arrow-right"></use>
         </svg>
       </button>

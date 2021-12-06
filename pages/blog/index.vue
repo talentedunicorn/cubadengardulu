@@ -1,5 +1,5 @@
 <template>
-  <main class="blog">
+  <section class="blog">
     <div class="container">
       <ol class="article_list">
         <li v-for="article in articles" :key="article.sys.id" class="article" :style="{ '--bg': `url(${article.fields.cover.fields.file.url})` }">
@@ -8,7 +8,7 @@
         </li>
       </ol>
     </div>
-  </main>
+  </section>
 </template>
 
 <script lang="ts">

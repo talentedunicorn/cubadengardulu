@@ -1,16 +1,16 @@
 <template>
   <article class="article">
     <header class="article_header">
-      <h2 class="article_title">{{ article.fields.title }}</h2>
+      <h1 class="article_title">{{ article.fields.title }}</h1>
       <p>Published on <time :datetime="article.sys.updatedAt">{{ article.sys.updatedAt | formatDate }}</time></p>
     </header>
     <figure v-if="article.fields.cover" class="article_cover">
       <img :src="article.fields.cover.fields.file.url" :alt="article.fields.cover.fields.title">
       <figcaption>{{ article.fields.cover.fields.title }}</figcaption>
     </figure>
-    <main class="article_content container">
+    <section class="article_content container">
       <RichTextRenderer :document="article.fields.content" :node-renderers="renderNodes()" />
-    </main>
+    </section>
   </article>
 </template>
 
@@ -96,6 +96,12 @@ export default Vue.extend({
 
 .article_content figure {
   margin: 3rem 0;
+}
+
+.article_content blockquote {
+  margin: 2rem 0;
+  padding: 1rem 2rem;
+  font-size: 1.8rem;
 }
 
 .article_cover {

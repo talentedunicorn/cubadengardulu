@@ -1,8 +1,8 @@
 <template>
   <footer>
     <section>
-      <h4>A collaboration by</h4>
-      <nav>
+      <p>A collaboration by</p>
+      <nav aria-label="Footer navigation">
         <a v-for="link in links" :key="link.sys.id" class="logo" :href="link.fields.url">
           <img :src="link.fields.logo.fields.file.url" :alt="link.fields.logo.fields.title">
         </a>

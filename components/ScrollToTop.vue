@@ -4,8 +4,9 @@
         v-show="showScrollTop"
         v-scroll-to:true="scrollToId"
         class="ScrollTop button"
+        aria-label="Scroll to top"
       >
-        <svg viewBox="0 0 24 24">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <use xlink:href="#arrow-up"></use>
         </svg>
       </button>

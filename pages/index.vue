@@ -2,8 +2,8 @@
   <div class="Page">
     <aside class="Nav">
       <Social />
-      <button class="button menu-toggle" @click="menuOpened = !menuOpened">
-        <svg viewBox="0 0 24 24">
+      <button class="button menu-toggle" aria-label="Toggle menu" @click="menuOpened = !menuOpened">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <use v-if="menuOpened" xlink:href="#close"></use>
           <use v-else xlink:href="#menu"></use>
         </svg>
@@ -209,10 +209,6 @@ svg {
 
 .Intro {
   font-size: 1.2rem;
-}
-
-.Intro .heading {
-  color: var(--pink);
 }
 
 .Intro .container {

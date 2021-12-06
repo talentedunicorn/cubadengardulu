@@ -1,14 +1,12 @@
 <template>
   <dl class="FAQs">
     <div
-      v-for="(item, index) in faqs.items"
-      :id="'#faq_' + index"
+      v-for="item in faqs.items"
       :key="item.sys.id"
       :class="{ selected: selected === item.sys.id }"
       class="FAQ"
     >
       <dt
-        v-scrollTo="'faq_' + index"
         class="FAQTitle"
         @click="selected = item.sys.id"
       >
@@ -87,10 +85,10 @@ export default Vue.extend({
 
 .FAQ:not(.selected) .FAQTitle {
   cursor: pointer;
-  border: 0.2em solid var(--blue-dark);
+  border: 0.2em solid var(--black);
   border-radius: 0.3em;
   font-size: 1.2rem;
-  background: var(--blue-dark);
+  background: var(--black);
   color: var(--white);
 }
 
