@@ -50,7 +50,7 @@ nav {
 }
 
 .logo {
-  flex: 0 8rem;
+  flex: 0 7rem;
   filter: saturate(0%);
 }
 

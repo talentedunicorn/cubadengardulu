@@ -1,5 +1,5 @@
 <template>
-  <div class="Page">
+  <div class="Page" :style="{ '--cover': `url(${intro.fields.image.fields.file.url})` }">
     <aside class="Nav">
       <Social />
       <button class="button menu-toggle" aria-label="Toggle menu" @click="menuOpened = !menuOpened">
@@ -191,7 +191,7 @@ svg {
 
 .Page::before {
   content: '';
-  background: url(~/assets/images/cdd-poster.png) no-repeat center center/cover;
+  background: var(--cover) no-repeat center center/cover;
   height: 60vh;
 }
 
