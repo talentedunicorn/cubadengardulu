@@ -3,7 +3,7 @@
   <ol v-else class="gallery">
     <li v-for="item in gallery" :key="item.sys.id" class="gallery_item">
       <a :href="item.fields.link">
-        <img :src="item.fields.image.fields.file.url" :alt="item.fields.image.fields.title">
+        <nuxt-img :src="item.fields.image.fields.file.url" :alt="item.fields.image.fields.title" width="400" />
       </a>
     </li>
   </ol>

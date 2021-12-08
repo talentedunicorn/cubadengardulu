@@ -1,8 +1,9 @@
 <template>
   <article class="Playlist">
     <h3 class="PlaylistTitle">{{ playlist.fields.title }}</h3>
-    <img
+    <nuxt-img
       class="PlaylistImage"
+      width="600"
       :src="playlist.fields.cover.fields.file.url"
       :alt="playlist.fields.cover.fields.title"
     />
