@@ -35,12 +35,18 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
+    '@nuxt/image'
   ],
   modules: [
     '@nuxtjs/axios'
   ],
   axios: {
     baseURL: process.env.BASE_URL,
+  },
+  image: {
+    contentful: {
+      baseURL: 'https://images.ctfassets.net'
+    }
   },
   env: {
     CTF_SPACE_ID: process.env.CTF_SPACE_ID,
