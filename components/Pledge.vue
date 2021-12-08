@@ -5,7 +5,7 @@
     </button>
     <transition name="slide-down">
       <label v-if="!$fetchState.pending" class="PledgeProgress">
-        <progress :value="pledgeCount" :max="maxPledges" :style="{ '--progress-value': `${(pledgeCount / maxPledges) * 100}%`}"></progress>
+        <progress v-if="pledgeCount < maxPledges" :value="pledgeCount" :max="maxPledges" :style="{ '--progress-value': `${(pledgeCount / maxPledges) * 100}%`}"></progress>
         {{ pledgeCount }} pledges made
       </label>
     </transition>
