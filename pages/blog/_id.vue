@@ -34,9 +34,16 @@ export default Vue.extend({
       article: {} as Entry<any>
     }
   },
-  head(): { title: string } {
+  head(): { title: string, meta?: any[] } {
     return {
-      title: this.article.fields.title
+      title: this.article.fields.title,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.article.fields.excerpt
+        }
+      ]
     }
   },
   methods: {
