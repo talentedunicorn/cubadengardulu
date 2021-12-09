@@ -5,7 +5,7 @@
       <p>Published on <time :datetime="article.sys.updatedAt">{{ article.sys.updatedAt | formatDate }}</time></p>
     </header>
     <figure v-if="article.fields.cover" class="article_cover">
-      <img :src="article.fields.cover.fields.file.url" :alt="article.fields.cover.fields.title">
+      <nuxt-img :src="article.fields.cover.fields.file.url" :alt="article.fields.cover.fields.title" width="800" />
       <figcaption>{{ article.fields.cover.fields.title }}</figcaption>
     </figure>
     <section class="article_content container">
@@ -34,9 +34,26 @@ export default Vue.extend({
       article: {} as Entry<any>
     }
   },
-  head(): { title: string } {
+  head(): { title: string, meta?: any[] } {
     return {
-      title: this.article.fields.title
+      title: this.article.fields.title,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.article.fields.excerpt
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: this.article.fields.title
+        },
+        {
+          hid: 'og:image',
+          name: 'og:image',
+          content: this.article.fields.cover.fields.file.url
+        }
+      ]
     }
   },
   methods: {

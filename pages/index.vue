@@ -34,7 +34,8 @@
       <div class="container">
         <h2 class="heading">{{ pledgeContent.fields.title }}</h2>
         <figure>
-          <img
+          <nuxt-img
+            width="600"
             :src="pledgeContent.fields.image.fields.file.url"
             :alt="pledgeContent.fields.image.fields.description"
           />
@@ -81,10 +82,10 @@
     <section id="getInTouch" class="Contact">
       <div class="container">
         <h2 class="heading">{{ contact.fields.title }}</h2>
-        <ContactForm class="ContactForm" />
         <figure>
-          <img :src="contact.fields.image.fields.file.url" :alt="contact.fields.image.fields.title">
+          <nuxt-img :src="contact.fields.image.fields.file.url" :alt="contact.fields.image.fields.title" width="500" />
         </figure>
+        <ContactForm class="ContactForm" />
       </div>
     </section>
   </div>

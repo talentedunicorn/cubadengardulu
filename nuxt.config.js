@@ -35,18 +35,32 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
+    '@nuxt/image',
+    '@nuxtjs/google-analytics'
   ],
   modules: [
     '@nuxtjs/axios'
   ],
   axios: {
-    baseURL: process.env.BASE_URL,
+    baseURL: process.env.BASE_URL
+  },
+  image: {
+    provider: 'contentful',
+    contentful: {
+      baseURL: 'https://images.ctfassets.net'
+    }
+  },
+  googleAnalytics: {
+    id: process.env.GA_ID
   },
   env: {
+    BASE_URL: process.env.BASE_URL || process.env.NUXT_ENV_VERCEL_URL,
+    NUXT_ENV_VERCEL_URL: process.env.NUXT_ENV_VERCEL_URL,
     CTF_SPACE_ID: process.env.CTF_SPACE_ID,
     CTF_ACCESS_TOKEN: process.env.CTF_ACCESS_TOKEN,
     CTF_PREVIEW_TOKEN: process.env.CTF_PREVIEW_TOKEN,
     FORMSPREE_ENDPOINT: process.env.FORMSPREE_ENDPOINT,
     PLEDGE_LIMIT: process.env.PLEDGE_LIMIT,
+    GA_ID: process.env.GA_ID,
   }
 }
