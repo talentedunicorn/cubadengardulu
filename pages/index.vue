@@ -235,7 +235,7 @@ svg {
 
 .Playlists,
 .Gallery {
-  background: var(--blue);
+  background: var(--yellow);
 }
 
 .Contact {

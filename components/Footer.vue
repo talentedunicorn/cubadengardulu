@@ -24,7 +24,7 @@ export default Vue.extend({
     }
   },
   async fetch() {
-    this.links = (await getClient().getEntries({ content_type: 'footerLinks' })).items
+    this.links = (await getClient().getEntries({ content_type: 'footerLinks', order: 'fields.title' })).items
   }
 })
 </script>
