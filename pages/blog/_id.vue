@@ -42,6 +42,16 @@ export default Vue.extend({
           hid: 'description',
           name: 'description',
           content: this.article.fields.excerpt
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: this.article.fields.title
+        },
+        {
+          hid: 'og:image',
+          name: 'og:image',
+          content: this.article.fields.cover.fields.file.url
         }
       ]
     }
