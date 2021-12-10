@@ -4,7 +4,7 @@
       <p>A collaboration by</p>
       <nav aria-label="Footer navigation">
         <a v-for="link in links" :key="link.sys.id" class="logo" :href="link.fields.url">
-          <nuxt-img :src="link.fields.logo.fields.file.url" :alt="link.fields.logo.fields.title" width="200" />
+          <nuxt-img :src="link.fields.logo.fields.file.url" :alt="link.fields.logo.fields.title" width="200" loading="lazy" />
         </a>
       </nav>
     </section>

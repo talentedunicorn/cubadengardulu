@@ -3,6 +3,7 @@
     <h3 class="PlaylistTitle">{{ playlist.fields.title }}</h3>
     <nuxt-img
       class="PlaylistImage"
+      loading="lazy"
       width="600"
       :src="playlist.fields.cover.fields.file.url"
       :alt="playlist.fields.cover.fields.title"
@@ -17,6 +18,7 @@
         frameborder="0"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         class="PlaylistEmbed"
+        loading="lazy"
         @load="iframeLoaded = true"
       ></iframe>
     </div>
