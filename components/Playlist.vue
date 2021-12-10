@@ -13,6 +13,7 @@
       <iframe
         v-show="iframeLoaded"
         :src="playlist.fields.link"
+        :title="playlist.fields.title"
         width="100%"
         height="380"
         frameborder="0"
