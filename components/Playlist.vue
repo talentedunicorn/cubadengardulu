@@ -3,6 +3,7 @@
     <h3 class="PlaylistTitle">{{ playlist.fields.title }}</h3>
     <nuxt-img
       class="PlaylistImage"
+      format="webp"
       loading="lazy"
       width="600"
       :src="playlist.fields.cover.fields.file.url"

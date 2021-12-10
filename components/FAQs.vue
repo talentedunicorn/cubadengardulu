@@ -20,7 +20,7 @@
           <RichTextRenderer :document="item.fields.answer" />
         </div>
         <figure v-if="item.fields.image" >
-          <nuxt-img :src="item.fields.image.fields.file.url" :alt="item.fields.image.fields.title" width="600" loading="lazy" />
+          <nuxt-img :src="item.fields.image.fields.file.url" :alt="item.fields.image.fields.title" width="600" loading="lazy" format="webp" />
           <figcaption v-if="item.fields.image.fields.description">{{ item.fields.image.fields.description }}</figcaption>
         </figure>
       </dd>

@@ -5,7 +5,7 @@
       <p>Published on <time :datetime="article.sys.updatedAt">{{ article.sys.updatedAt | formatDate }}</time></p>
     </header>
     <figure v-if="article.fields.cover" class="article_cover">
-      <nuxt-img :src="article.fields.cover.fields.file.url" :alt="article.fields.cover.fields.title" width="800" loading="lazy" />
+      <nuxt-img :src="article.fields.cover.fields.file.url" :alt="article.fields.cover.fields.title" width="800" loading="lazy" format="webp" />
       <figcaption>{{ article.fields.cover.fields.title }}</figcaption>
     </figure>
     <section class="article_content container">

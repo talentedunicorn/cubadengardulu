@@ -39,6 +39,7 @@
             :src="pledgeContent.fields.image.fields.file.url"
             :alt="pledgeContent.fields.image.fields.description"
             loading="lazy"
+            format="webp"
           />
           <figcaption>
             {{ pledgeContent.fields.image.fields.description }}
@@ -84,7 +85,7 @@
       <div class="container">
         <h2 class="heading">{{ contact.fields.title }}</h2>
         <figure>
-          <nuxt-img :src="contact.fields.image.fields.file.url" :alt="contact.fields.image.fields.title" width="500" loading="lazy" />
+          <nuxt-img :src="contact.fields.image.fields.file.url" :alt="contact.fields.image.fields.title" width="500" loading="lazy" format="webp" />
         </figure>
         <ContactForm class="ContactForm" />
       </div>
