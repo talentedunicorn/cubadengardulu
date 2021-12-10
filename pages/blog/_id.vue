@@ -62,9 +62,12 @@ export default Vue.extend({
         [BLOCKS.EMBEDDED_ASSET]: (node: any, key: any, h: any, next: any) => {
           return h('figure', { key },
           [
-            h('img', { 
+            h('nuxt-img', { 
               key,
               attrs: {
+                  format: 'webp',
+                  loading: 'lazy',
+                  width: 500,
                   src: node.data.target.fields.file.url,
                   alt: node.data.target.fields.title
               }, 
