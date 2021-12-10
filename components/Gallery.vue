@@ -3,7 +3,7 @@
   <ol v-else class="gallery">
     <li v-for="item in gallery" :key="item.sys.id" class="gallery_item">
       <a :href="item.fields.link">
-        <nuxt-img :src="item.fields.image.fields.file.url" :alt="item.fields.image.fields.title" width="400" />
+        <nuxt-img :src="item.fields.image.fields.file.url" :alt="item.fields.image.fields.title" width="500" />
       </a>
     </li>
   </ol>
@@ -36,7 +36,8 @@ export default Vue.extend({
 
 .gallery_item a {
   height: 100%;
-  display: block;
+  display: flex;
+  justify-content: center;
 }
 
 .gallery_item img {

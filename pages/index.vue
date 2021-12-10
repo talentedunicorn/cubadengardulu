@@ -76,7 +76,7 @@
     <section class="Gallery">
       <div class="container">
         <h2 class="heading">Gallery</h2>
-        <Gallery />
+        <Gallery class="GalleryContent" />
       </div>
     </section>
     <section id="getInTouch" class="Contact">
@@ -246,6 +246,7 @@ svg {
   gap: 3rem;
 }
 
+.GalleryContent,
 .ContactForm {
   flex: 100%;
 }
