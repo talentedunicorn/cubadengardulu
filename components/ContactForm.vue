@@ -50,10 +50,21 @@ import * as yup from 'yup'
 import { OptionalObjectSchema } from 'yup/lib/object'
 
 const schema: OptionalObjectSchema<any> = yup.object({
-  fullName: yup.string().required(),
-  email: yup.string().email().required(),
-  phone: yup.string().matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/, 'Invalid phone number'),
-  message: yup.string().required(),
+  fullName: yup
+    .string()
+    .required(),
+  email: yup
+    .string()
+    .email()
+    .required(),
+  phone: yup
+    .string()
+    .nullable()
+    .transform((value: string, oldVal: string) => oldVal.trim() === '' ? null : value)
+    .matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/, 'Invalid phone number'),
+  message: yup
+    .string()
+    .required(),
 })
 const defaultData = {
   fullName: '',
