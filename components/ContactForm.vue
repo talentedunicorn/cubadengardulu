@@ -31,7 +31,7 @@
       </div>
       <span
           v-if="Object.keys(errors).length"
-          class="error-message"
+          class="error-message full"
           v-text="Object.values(errors)[0]"
         ></span>
       <button
@@ -64,6 +64,7 @@ const schema: OptionalObjectSchema<any> = yup.object({
     .matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/, 'Invalid phone number'),
   message: yup
     .string()
+    .min(5, 'Message is too short')
     .required(),
 })
 const defaultData = {
