@@ -1,17 +1,17 @@
 <template>
   <transition name="slide-down">
-    <p v-if="submitted" class="success">
-      <svg viewBox="0 0 24 24">
-        <use xlink:href="#check"></use>
-      </svg>
-      Thank you, we have recieved your message
-
+    <section v-if="submitted" class="success">
       <button class="button" @click="reset">
         <svg viewBox="0 0 24 24">
           <use xlink:href="#close"></use>
         </svg>
       </button>
-    </p>
+      <svg viewBox="0 0 24 24">
+        <use xlink:href="#check"></use>
+      </svg>
+      <p>Thank you, we have recieved your message</p>
+
+    </section>
     <form v-else class="form" @submit.prevent="submit">
       <div class="full">
         <label for="fullName" :class="{error: errors.fullName}">Full name</label>
@@ -123,6 +123,7 @@ export default Vue.extend({
 
 .success {
   display: flex;
+  flex-flow: column;
   align-items: center;
   gap: 1rem;
   flex: 100%;
@@ -133,7 +134,7 @@ export default Vue.extend({
 }
 
 .success > svg {
-  inline-size: var(--success-icon-size, 6rem);
+  inline-size: 5rem;
   fill: var(--blue-dark);
 }
 

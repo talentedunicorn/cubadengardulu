@@ -140,7 +140,7 @@ export default Vue.extend({
       pledgeSchema.validate(this.pledgeForm)
         .then(() => {
           this.$axios.post(`/api/pledges`, { ...this.pledgeForm, dateOfBirth: new Date(this.pledgeForm.dateOfBirth), postCode: parseInt(this.pledgeForm.postCode) })
-          .then(({ pledge }: any) => {
+          .then(({ data: { pledge }}: any) => {
             this.pledge = pledge
             this.$fetch()
           })
