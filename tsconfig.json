@@ -28,6 +28,7 @@
       "@types/node",
       "@nuxtjs/axios",
       "@nuxt/image",
+      "@nuxtjs/auth-next",
     ]
   },
   "include": [

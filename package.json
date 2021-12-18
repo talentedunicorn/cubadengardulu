@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@contentful/rich-text-types": "^15.7.0",
+    "@nuxtjs/auth-next": "5.0.0-1637745161.ea53f98",
     "@nuxtjs/axios": "^5.13.6",
     "@prisma/client": "3.5.0",
     "contentful": "^9.1.4",

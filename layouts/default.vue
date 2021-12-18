@@ -1,9 +1,11 @@
 <template>
   <main id="top">
     <Icons />
-    <Nuxt />
+    <div class="content">
+      <Nuxt />
+    </div>
     <ScrollToTop scroll-to-id="top" />
-    <Footer />
+    <Footer class="footer" />
   </main>
 </template>
 
@@ -11,5 +13,15 @@
 main {
   height: 100vh;
   overflow: auto;
+  display: flex;
+  flex-flow: column;
+}
+
+.content {
+  flex: 1;
+}
+
+.footer {
+  margin-top: auto;
 }
 </style>
