@@ -6,7 +6,7 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "prisma migrate dev && nuxt generate",
+    "generate": "prisma migrate deploy && nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint": "yarn lint:js && yarn prettier",
     "prettier": "prettier -w components layouts pages plugins types",
