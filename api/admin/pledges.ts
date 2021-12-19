@@ -1,19 +1,7 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { PrismaClient } from "@prisma/client";
-import axios from "axios";
+import isGoogleAuthed from "../../utils/googleAuthChecker";
 const prisma = new PrismaClient()
-
-
-const isGoogleAuthed = async (req: VercelRequest): Promise<boolean> => {
-  if (!req.headers.authorization) return false 
-  const token = req.headers.authorization?.split(' ')[1]  
-  try {
-    await axios.get(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${token}`)
-    return true
-  } catch(_) {
-    return false
-  }
-}
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const isAuthed = await isGoogleAuthed(req)
@@ -31,6 +19,11 @@ export default async (req: VercelRequest, res: VercelResponse) => {
         skip,
         orderBy: {
           createdAt: 'desc',
+        },
+        select: {
+          fullName: true,
+          email: true,
+          createdAt: true,
         }
       })
       res.json({ pledges })

@@ -5,7 +5,11 @@
       <button class="button" @click="$auth.logout()">Log out</button>
     </header>
     <section class="content">
-      <h3>{{ total }} pledges made</h3>
+      <header class="content-header">
+        <h3>{{ total }} pledges made</h3>
+
+        <button class="button" :disabled="downloading" @click="downloadCSV">Download CSV</button>
+      </header>
       <template v-if="total < 1">
         <p>No pledges found</p>
       </template>
@@ -14,13 +18,13 @@
           <span>
             Page
             <select @change="goTo($event)">
-              <option v-for="p in pages" :key="p" :value="p" :selected="p === page">{{ p }}</option>
+              <option v-for="p in pages" :key="p" :value="p - 1" :selected="p - 1 === page">{{ p }}</option>
             </select> 
             of {{ totalPages }}
           </span>
           <nav class="pagination">
-            <button class="button" :disabled="page === 1"  @click="previous">Previous</button>
-            <button class="button" :disabled="page === totalPages" @click="next">Next</button>
+            <button class="button" :disabled="page === 0"  @click="previous">Previous</button>
+            <button class="button" :disabled="page === totalPages - 1" @click="next">Next</button>
           </nav>
         </div>
 
@@ -29,7 +33,7 @@
         </template>
         <ul v-else>
           <li v-for="pledge in pledges" :key="pledge.id">
-            <p>{{ pledge.fullName }}</p>
+            <p>{{ pledge.fullName }} pledged on {{ pledge.createdAt | formatDate }}</p>
           </li>
         </ul>
       </template>
@@ -51,7 +55,8 @@ export default Vue.extend({
       page: 0,
       limit: 10,
       total: 0,
-      pledges: [] as Pledge[],
+      pledges: [] as Partial<Pledge>[],
+      downloading: false
     }
   },
   async fetch() {
@@ -59,7 +64,7 @@ export default Vue.extend({
   },
   computed: {
     totalPages(): number {
-      return Math.ceil(this.total / this.limit) - 1
+      return Math.ceil(this.total / this.limit)
     },
     pages(): number[] {
       const list = [];
@@ -70,13 +75,13 @@ export default Vue.extend({
   },
   methods: {
     next(): void {
-      if (this.page < this.totalPages) {
+      if (this.page < this.totalPages - 1) {
         this.page += 1
         this.$fetch()
       }
     },
     previous(): void {
-      if (this.page > 1) {
+      if (this.page > 0) {
         this.page -= 1
         this.$fetch()
       }
@@ -84,6 +89,18 @@ export default Vue.extend({
     goTo({ target }: { target: HTMLInputElement }): void {
       this.page =  parseInt(target.value, 10)
       this.$fetch()
+    },
+    async downloadCSV() {
+      this.downloading = true
+      const downloadLink = document.createElement("a")
+      const { csvData } = (await this.$axios.get(`/api/admin/generate-csv`)).data
+      downloadLink.href = `data:text/csv;charset=utf-8,${csvData}`
+      downloadLink.download = `pledges_${Date.now()}.csv`
+      
+      document.body.append(downloadLink)
+      downloadLink.click()
+      document.body.removeChild(downloadLink)
+      this.downloading = false
     }
   }
 })
@@ -92,14 +109,16 @@ export default Vue.extend({
 <style scoped>
 .header,
 .controls,
-.pagination {
+.pagination,
+.content-header {
   display: flex;
   align-items: center;
   gap: 2rem;
 }
 
 .header,
-.controls {
+.controls,
+.content-header {
   justify-content: space-between;
 }
 
@@ -114,5 +133,9 @@ export default Vue.extend({
 
 .header-title {
   color: var(--gray);
+}
+
+.content-header {
+  margin-bottom: 2rem;
 }
 </style>
