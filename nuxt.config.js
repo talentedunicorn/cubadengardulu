@@ -39,7 +39,8 @@ export default {
     '@nuxtjs/google-analytics'
   ],
   modules: [
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next'
   ],
   axios: {
     baseURL: process.env.BASE_URL
@@ -53,6 +54,20 @@ export default {
   googleAnalytics: {
     id: process.env.GA_ID
   },
+  auth: {
+    redirect: {
+      callback: '/callback',
+      home: '/admin'
+    },
+    strategies: {
+      google: {
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        scope: ['email', 'profile'],
+        codeChallengeMethod: '',
+        responseType: 'token id_token',
+      }
+    }
+  },
   env: {
     BASE_URL: process.env.BASE_URL || process.env.NUXT_ENV_VERCEL_URL,
     NUXT_ENV_VERCEL_URL: process.env.NUXT_ENV_VERCEL_URL,
@@ -60,6 +75,7 @@ export default {
     CTF_ACCESS_TOKEN: process.env.CTF_ACCESS_TOKEN,
     CTF_PREVIEW_TOKEN: process.env.CTF_PREVIEW_TOKEN,
     FORMSPREE_ENDPOINT: process.env.FORMSPREE_ENDPOINT,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     PLEDGE_LIMIT: process.env.PLEDGE_LIMIT,
     GA_ID: process.env.GA_ID,
   }
