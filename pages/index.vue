@@ -290,6 +290,10 @@ svg {
     z-index: 3;
   }
 
+  .Page > section {
+    padding-top: 6rem;
+  }
+
   .ContactForm {
     flex: 0 50rem;
     align-self: flex-start;
