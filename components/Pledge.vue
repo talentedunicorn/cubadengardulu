@@ -70,7 +70,7 @@
             </span>
           </transition>
 
-          <button class="button" type="submit" :disabled="submitting">Submit</button>
+          <button class="button" type="submit" :disabled="submitting">{{ submitting ? 'Submitting...' : 'Submit' }}</button>
         </form>
       </div>
     </Modal>
@@ -134,29 +134,25 @@ export default Vue.extend({
       this.pledgeOpened = false
       this.pledgeForm = pledgeFormDefault()
     },
-    submit() {
+    async submit() {
       this.submitting = true;
       this.error = {};
-      pledgeSchema.validate(this.pledgeForm)
-        .then(() => {
-          this.$axios.post(`/api/pledges`, { ...this.pledgeForm, dateOfBirth: new Date(this.pledgeForm.dateOfBirth), postCode: parseInt(this.pledgeForm.postCode) })
-          .then(({ data: { pledge }}: any) => {
-            this.pledge = pledge
-            this.$fetch()
-          })
-          .catch((e: any) => {
-            this.error = { path: '', ...e.response.data }
-          })
-        })
-        .catch((e: any) => {
-          this.error = {
-            message: e.message,
-            path: e.path,
-          }
-        })
-        .finally(() => {
-          this.submitting = false;
-        })
+
+      try {
+        await pledgeSchema.validate(this.pledgeForm)
+        try {
+          this.pledge = (await this.$axios.post(`/api/pledges`, { ...this.pledgeForm, dateOfBirth: new Date(this.pledgeForm.dateOfBirth), postCode: parseInt(this.pledgeForm.postCode) })).data.pledge
+          this.$fetch()
+          this.submitting = false
+        } catch (e) {
+          console.error(e)
+        }
+      } catch(e) {
+        this.error = {
+          message: e.message,
+          path: e.path,
+        }
+      }
     }
   }
 })
