@@ -26,21 +26,25 @@ export default async (req: VercelRequest, res: VercelResponse) => {
   }
 
   if (req.method === "GET") {
-    const data = (await prisma.pledge.findMany({
-      select: {
-        fullName: true,
-        email: true,
-        phone: true,
-        dateOfBirth: true,
-        address: true,
-        address2: true,
-        postCode: true,
-        city: true,
-        state: true,
-        tshirtSize: true
-      }
-    })) as unknown as { [key:string]: string}[]
-    const csvData = generateCSV(data)
-    res.json({ csvData })
+    try {
+      const data = (await prisma.pledge.findMany({
+        select: {
+          fullName: true,
+          email: true,
+          phone: true,
+          dateOfBirth: true,
+          address: true,
+          address2: true,
+          postCode: true,
+          city: true,
+          state: true,
+          tshirtSize: true
+        }
+      })) as unknown as { [key:string]: string}[]
+      const csvData = generateCSV(data)
+      res.json({ csvData })
+    } catch(_) {
+      res.status(500).end()
+    }
   }
 }
