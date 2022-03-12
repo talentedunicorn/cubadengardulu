@@ -18,7 +18,7 @@
 import Vue from 'vue'
 import RichTextRenderer from 'contentful-rich-text-vue-renderer'
 import { Entry } from 'contentful'
-import { BLOCKS } from '@contentful/rich-text-types'
+import { BLOCKS, INLINES } from '@contentful/rich-text-types'
 import { getClient } from '~/plugins/contentful'
 export default Vue.extend({
   components: {
@@ -76,6 +76,20 @@ export default Vue.extend({
               key,
             }, node.data.target.fields.title)
           ])
+        },
+        [INLINES.HYPERLINK]: (node: any, key: any, h: any, next: any) => {
+          if ((node.data.uri).includes("youtube.com/embed") || (node.data.uri).includes("youtube-nocookie.com/embed")) {
+            return h('div', { key, attrs: { class: "fluid-video" } }, [
+              h('iframe', {
+              key,
+              attrs: {
+                src: node.data.uri,
+                frameborder: 0,
+                allow: "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              }
+            }, next(node.content, key, h, next))], next)
+          }
+          return h('a', { key, attrs: { href: node.data.uri }}, next(node.content, key, h, next))
         }
       }
     }
