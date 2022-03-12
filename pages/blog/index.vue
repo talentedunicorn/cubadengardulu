@@ -2,9 +2,21 @@
   <section class="blog">
     <div class="container">
       <ol class="article_list">
-        <li v-for="article in articles" :key="article.sys.id" class="article" :style="{ '--bg': `url(${article.fields.cover.fields.file.url})` }">
-          <NuxtLink :to="'/blog/' + article.sys.id">{{ article.fields.title }}</NuxtLink>
-          <span>Published on <time :datetime="article.sys.updatedAt">{{ article.sys.updatedAt | formatDate }}</time></span>
+        <li
+          v-for="article in articles"
+          :key="article.sys.id"
+          class="article"
+          :style="{ '--bg': `url(${article.fields.cover.fields.file.url})` }"
+        >
+          <NuxtLink :to="'/blog/' + article.sys.id">{{
+            article.fields.title
+          }}</NuxtLink>
+          <span
+            >Published on
+            <time :datetime="article.sys.updatedAt">{{
+              article.sys.updatedAt | formatDate
+            }}</time></span
+          >
         </li>
       </ol>
     </div>
@@ -18,15 +30,17 @@ export default Vue.extend({
   layout: 'blog',
   scrollToTop: true,
   async asyncData({ query }) {
-    const articles = (await getClient(query.preview === 'true').getEntries({
-      content_type: 'article',
-      order: '-sys.updatedAt'
-    })).items
+    const articles = (
+      await getClient(query.preview === 'true').getEntries({
+        content_type: 'article',
+        order: '-sys.updatedAt',
+      })
+    ).items
     return { articles }
   },
   head: {
-    title: 'Stories'
-  }
+    title: 'Stories',
+  },
 })
 </script>
 
@@ -78,12 +92,18 @@ export default Vue.extend({
 .article a::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 @media screen and (min-width: 40rem) {
   .article_list {
-    grid-template-columns: repeat(auto-fill, minmax(var(--card-size, 15rem), 1fr));
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(var(--card-size, 15rem), 1fr)
+    );
   }
 }
 

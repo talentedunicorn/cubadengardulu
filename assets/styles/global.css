@@ -48,6 +48,21 @@ figcaption {
   font-size: 1rem;
 }
 
+.fluid-video {
+  width: 100%;
+  padding: 0;
+  padding-top: 56.25%;
+  position: relative;
+}
+
+.fluid-video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .visually-hidden {
   position: absolute;
   clip: rect(0 0 0 0);

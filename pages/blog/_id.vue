@@ -2,14 +2,27 @@
   <article class="article">
     <header class="article_header">
       <h1 class="article_title">{{ article.fields.title }}</h1>
-      <p>Published on <time :datetime="article.sys.updatedAt">{{ article.sys.updatedAt | formatDate }}</time></p>
+      <p>
+        Published on
+        <time :datetime="article.sys.updatedAt">{{
+          article.sys.updatedAt | formatDate
+        }}</time>
+      </p>
     </header>
     <figure v-if="article.fields.cover" class="article_cover">
-      <nuxt-img :src="article.fields.cover.fields.file.url" :alt="article.fields.cover.fields.title" width="800" format="webp" />
+      <nuxt-img
+        :src="article.fields.cover.fields.file.url"
+        :alt="article.fields.cover.fields.title"
+        width="800"
+        format="webp"
+      />
       <figcaption>{{ article.fields.cover.fields.title }}</figcaption>
     </figure>
     <section class="article_content container">
-      <RichTextRenderer :document="article.fields.content" :node-renderers="renderNodes()" />
+      <RichTextRenderer
+        :document="article.fields.content"
+        :node-renderers="renderNodes()"
+      />
     </section>
   </article>
 </template>
@@ -18,7 +31,7 @@
 import Vue from 'vue'
 import RichTextRenderer from 'contentful-rich-text-vue-renderer'
 import { Entry } from 'contentful'
-import { BLOCKS } from '@contentful/rich-text-types'
+import { BLOCKS, INLINES } from '@contentful/rich-text-types'
 import { getClient } from '~/plugins/contentful'
 export default Vue.extend({
   components: {
@@ -26,60 +39,101 @@ export default Vue.extend({
   },
   layout: 'blog',
   async asyncData({ query, params }) {
-    const article = await getClient(query.preview === 'true').getEntry(params.id)
+    const article = await getClient(query.preview === 'true').getEntry(
+      params.id
+    )
     return { article }
   },
   data(): { article: Entry<any> } {
     return {
-      article: {} as Entry<any>
+      article: {} as Entry<any>,
     }
   },
-  head(): { title: string, meta?: any[] } {
+  head(): { title: string; meta?: any[] } {
     return {
       title: this.article.fields.title,
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: this.article.fields.excerpt
+          content: this.article.fields.excerpt,
         },
         {
           hid: 'og:title',
           name: 'og:title',
-          content: this.article.fields.title
+          content: this.article.fields.title,
         },
         {
           hid: 'og:image',
           name: 'og:image',
-          content: this.article.fields.cover.fields.file.url
-        }
-      ]
+          content: this.article.fields.cover.fields.file.url,
+        },
+      ],
     }
   },
   methods: {
     renderNodes() {
       return {
         [BLOCKS.EMBEDDED_ASSET]: (node: any, key: any, h: any, next: any) => {
-          return h('figure', { key },
-          [
-            h('nuxt-img', { 
-              key,
-              attrs: {
+          return h('figure', { key }, [
+            h(
+              'nuxt-img',
+              {
+                key,
+                attrs: {
                   format: 'webp',
                   loading: 'lazy',
                   width: 500,
                   src: node.data.target.fields.file.url,
-                  alt: node.data.target.fields.title
-              }, 
-            }, next(node.content, key, h, next)),
-            h('figcaption', { 
-              key,
-            }, node.data.target.fields.title)
+                  alt: node.data.target.fields.title,
+                },
+              },
+              next(node.content, key, h, next)
+            ),
+            h(
+              'figcaption',
+              {
+                key,
+              },
+              node.data.target.fields.title
+            ),
           ])
-        }
+        },
+        [INLINES.HYPERLINK]: (node: any, key: any, h: any, next: any) => {
+          if (
+            node.data.uri.includes('youtube.com/embed') ||
+            node.data.uri.includes('youtube-nocookie.com/embed')
+          ) {
+            return h(
+              'div',
+              { key, attrs: { class: 'fluid-video' } },
+              [
+                h(
+                  'iframe',
+                  {
+                    key,
+                    attrs: {
+                      src: node.data.uri,
+                      frameborder: 0,
+                      allow:
+                        'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture',
+                    },
+                  },
+                  next(node.content, key, h, next)
+                ),
+              ],
+              next
+            )
+          }
+          return h(
+            'a',
+            { key, attrs: { href: node.data.uri } },
+            next(node.content, key, h, next)
+          )
+        },
       }
-    }
-  }
+    },
+  },
 })
 </script>
 <style scoped>
@@ -106,7 +160,7 @@ export default Vue.extend({
 
 .article_content p {
   margin-bottom: 1.5rem;
-  font-size: 1.3  rem;
+  font-size: 1.3 rem;
   line-height: 1.6;
 }
 

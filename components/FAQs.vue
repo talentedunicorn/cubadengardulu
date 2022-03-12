@@ -6,10 +6,7 @@
       :class="{ selected: selected === item.sys.id }"
       class="FAQ"
     >
-      <dt
-        class="FAQTitle"
-        @click="selected = item.sys.id"
-      >
+      <dt class="FAQTitle" @click="selected = item.sys.id">
         {{ item.fields.title }}
         <svg v-if="selected !== item.sys.id" viewBox="0 0 24 24">
           <use xlink:href="#arrow-down"></use>
@@ -19,9 +16,17 @@
         <div>
           <RichTextRenderer :document="item.fields.answer" />
         </div>
-        <figure v-if="item.fields.image" >
-          <nuxt-img :src="item.fields.image.fields.file.url" :alt="item.fields.image.fields.title" width="600" loading="lazy" format="webp" />
-          <figcaption v-if="item.fields.image.fields.description">{{ item.fields.image.fields.description }}</figcaption>
+        <figure v-if="item.fields.image">
+          <nuxt-img
+            :src="item.fields.image.fields.file.url"
+            :alt="item.fields.image.fields.title"
+            width="600"
+            loading="lazy"
+            format="webp"
+          />
+          <figcaption v-if="item.fields.image.fields.description">
+            {{ item.fields.image.fields.description }}
+          </figcaption>
         </figure>
       </dd>
     </div>
@@ -52,7 +57,9 @@ export default Vue.extend({
     }
   },
   async fetch() {
-    this.faqs = (await getClient().getEntry('2boIQq9r3ln0iLGjquWg0D') as Entry<any>).fields
+    this.faqs = (
+      (await getClient().getEntry('2boIQq9r3ln0iLGjquWg0D')) as Entry<any>
+    ).fields
     this.selected = this.faqs.items[0].sys.id
   },
 })
@@ -119,8 +126,7 @@ export default Vue.extend({
 
 @media screen and (min-width: 60rem) {
   .FAQContent > div {
-    flex: 0 60% ;
+    flex: 0 60%;
   }
 }
-
 </style>

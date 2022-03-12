@@ -5,10 +5,10 @@ Vue.filter('formatDate', (value: string): string => {
   return Intl.DateTimeFormat('en-MY', {
     month: 'short',
     day: '2-digit',
-    year: 'numeric'
+    year: 'numeric',
   }).format(date)
-});
+})
 
 Vue.filter('makeHash', (value: string): string => {
   return `#${value.toLocaleLowerCase()}`
-});
+})

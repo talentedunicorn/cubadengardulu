@@ -10,30 +10,35 @@
         <use xlink:href="#check"></use>
       </svg>
       <p>Thank you, we have recieved your message</p>
-
     </section>
     <form v-else class="form" @submit.prevent="submit">
       <div class="full">
-        <label for="fullName" :class="{error: errors.fullName}">Full name</label>
+        <label for="fullName" :class="{ error: errors.fullName }"
+          >Full name</label
+        >
         <input id="fullName" v-model="data.fullName" type="text" required />
       </div>
       <div>
-        <label for="email" :class="{error: errors.email}">Email address</label>
+        <label for="email" :class="{ error: errors.email }"
+          >Email address</label
+        >
         <input id="email" v-model="data.email" type="email" required />
       </div>
       <div>
-        <label for="phone" :class="{error: errors.phone}">Phone number (optional)</label>
+        <label for="phone" :class="{ error: errors.phone }"
+          >Phone number (optional)</label
+        >
         <input id="phone" v-model="data.phone" type="tel" />
       </div>
       <div class="full">
-        <label for="message" :class="{error: errors.message}">Message</label>
+        <label for="message" :class="{ error: errors.message }">Message</label>
         <textarea id="message" v-model="data.message" rows="3"></textarea>
       </div>
       <span
-          v-if="Object.keys(errors).length"
-          class="error-message full"
-          v-text="Object.values(errors)[0]"
-        ></span>
+        v-if="Object.keys(errors).length"
+        class="error-message full"
+        v-text="Object.values(errors)[0]"
+      ></span>
       <button
         class="button"
         type="submit"
@@ -50,22 +55,19 @@ import * as yup from 'yup'
 import { OptionalObjectSchema } from 'yup/lib/object'
 
 const schema: OptionalObjectSchema<any> = yup.object({
-  fullName: yup
-    .string()
-    .required(),
-  email: yup
-    .string()
-    .email()
-    .required(),
+  fullName: yup.string().required(),
+  email: yup.string().email().required(),
   phone: yup
     .string()
     .nullable()
-    .transform((value: string, oldVal: string) => oldVal.trim() === '' ? null : value)
-    .matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/, 'Invalid phone number'),
-  message: yup
-    .string()
-    .min(5, 'Message is too short')
-    .required(),
+    .transform((value: string, oldVal: string) =>
+      oldVal.trim() === '' ? null : value
+    )
+    .matches(
+      /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
+      'Invalid phone number'
+    ),
+  message: yup.string().min(5, 'Message is too short').required(),
 })
 const defaultData = {
   fullName: '',

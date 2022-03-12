@@ -1,16 +1,16 @@
 <template>
   <transition name="slide-down">
-      <button
-        v-show="showScrollTop"
-        v-scroll-to:true="scrollToId"
-        class="ScrollTop button"
-        aria-label="Scroll to top"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use xlink:href="#arrow-up"></use>
-        </svg>
-      </button>
-    </transition>
+    <button
+      v-show="showScrollTop"
+      v-scroll-to:true="scrollToId"
+      class="ScrollTop button"
+      aria-label="Scroll to top"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <use xlink:href="#arrow-up"></use>
+      </svg>
+    </button>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -19,8 +19,8 @@ export default Vue.extend({
   props: {
     scrollToId: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data(): { showScrollTop: boolean } {
     return {
@@ -29,15 +29,23 @@ export default Vue.extend({
   },
   mounted() {
     // Attach scroll listener
-    document.querySelector(`#${this.scrollToId}`)?.addEventListener('scroll', this.handleScroll)
+    document
+      .querySelector(`#${this.scrollToId}`)
+      ?.addEventListener('scroll', this.handleScroll)
   },
   beforeDestroy() {
-    document.querySelector(`#${this.scrollToId}`)?.removeEventListener('scroll', this.handleScroll)
+    document
+      .querySelector(`#${this.scrollToId}`)
+      ?.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
     handleScroll() {
-      const scrolledFromTop: number | undefined = document.querySelector(`#${this.scrollToId}`)?.scrollTop
-      this.showScrollTop = scrolledFromTop ? scrolledFromTop > window.innerHeight : false
+      const scrolledFromTop: number | undefined = document.querySelector(
+        `#${this.scrollToId}`
+      )?.scrollTop
+      this.showScrollTop = scrolledFromTop
+        ? scrolledFromTop > window.innerHeight
+        : false
     },
   },
 })
