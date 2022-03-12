@@ -1,9 +1,9 @@
 <template>
   <section class="Carousel">
     <transition-group name="slide-up" appear>
-    <div v-for="item in items" v-show="item === current" :key="item.sys.id">
-      <slot :data="item" />
-    </div>
+      <div v-for="item in items" v-show="item === current" :key="item.sys.id">
+        <slot :data="item" />
+      </div>
     </transition-group>
     <nav v-if="items.length > 1" aria-label="Carousel navigation">
       <button class="button" aria-label="Previous" @click="previous">

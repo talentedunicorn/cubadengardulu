@@ -1,8 +1,15 @@
 <template>
-  <div class="Page" :style="{ '--cover': `url(${intro.fields.image.fields.file.url})` }">
+  <div
+    class="Page"
+    :style="{ '--cover': `url(${intro.fields.image.fields.file.url})` }"
+  >
     <aside class="Nav">
       <Social />
-      <button class="button menu-toggle" aria-label="Toggle menu" @click="menuOpened = !menuOpened">
+      <button
+        class="button menu-toggle"
+        aria-label="Toggle menu"
+        @click="menuOpened = !menuOpened"
+      >
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <use v-if="menuOpened" xlink:href="#close"></use>
           <use v-else xlink:href="#menu"></use>
@@ -16,9 +23,7 @@
         <a v-scrollTo="'getInTouch'" href="#getInTouch" @click="closeMenu"
           >Get in touch</a
         >
-        <NuxtLink to="/blog">
-          Read stories
-        </NuxtLink>
+        <NuxtLink to="/blog"> Read stories </NuxtLink>
         <button class="button" @click="openPledge">Pledge now</button>
       </div>
     </aside>
@@ -85,7 +90,13 @@
       <div class="container">
         <h2 class="heading">{{ contact.fields.title }}</h2>
         <figure>
-          <nuxt-img :src="contact.fields.image.fields.file.url" :alt="contact.fields.image.fields.title" width="500" loading="lazy" format="webp" />
+          <nuxt-img
+            :src="contact.fields.image.fields.file.url"
+            :alt="contact.fields.image.fields.title"
+            width="500"
+            loading="lazy"
+            format="webp"
+          />
         </figure>
         <ContactForm class="ContactForm" />
       </div>
@@ -109,8 +120,9 @@ export default Vue.extend({
     const pledge = await client.getEntry('3DmtPWsvUUBrk4WZCzCxK3')
     const contact = await client.getEntry('2msZyDJT8jzQ26M5y1fZ2Y')
     const pledgeContent = await client.getEntry('1Br2SVPNM0uxZjnRa9SCl4')
-    const playlists = (await client.getEntry('2t0hiFPmnXeUghTnOkFskW') as Entry<any>)
-      .fields.items
+    const playlists = (
+      (await client.getEntry('2t0hiFPmnXeUghTnOkFskW')) as Entry<any>
+    ).fields.items
     return { intro, pledge, pledgeContent, playlists, contact }
   },
   data() {
@@ -124,8 +136,8 @@ export default Vue.extend({
       if (this.menuOpened) this.menuOpened = false
     },
     openPledge() {
-      (this.$refs.pledge! as any).openForm()
-    }
+      ;(this.$refs.pledge! as any).openForm()
+    },
   },
 })
 </script>

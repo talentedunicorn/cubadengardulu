@@ -3,26 +3,26 @@
     <Icons />
     <aside class="side">
       <transition name="slide-from-left">
-      <nav v-show="menuOpened" aria-label="Read our stories">
-        <NuxtLink to="/">
-          Home
-        </NuxtLink>
-        <NuxtLink to="/blog">
-          Articles
-        </NuxtLink>
-      </nav>
+        <nav v-show="menuOpened" aria-label="Read our stories">
+          <NuxtLink to="/"> Home </NuxtLink>
+          <NuxtLink to="/blog"> Articles </NuxtLink>
+        </nav>
       </transition>
-      <button class="button side-toggle" aria-label="Toggle menu" @click="menuOpened = !menuOpened">
+      <button
+        class="button side-toggle"
+        aria-label="Toggle menu"
+        @click="menuOpened = !menuOpened"
+      >
         <svg viewBox="0 0 24 24" aria-hidden="true">
-            <use v-if="menuOpened" xlink:href="#arrow-left"></use>
-            <use v-else xlink:href="#arrow-right"></use>
-          </svg>
+          <use v-if="menuOpened" xlink:href="#arrow-left"></use>
+          <use v-else xlink:href="#arrow-right"></use>
+        </svg>
       </button>
     </aside>
     <div id="top" class="content">
       <Nuxt />
       <Social class="social" />
-      <ScrollToTop scroll-to-id="top"/>
+      <ScrollToTop scroll-to-id="top" />
       <Footer />
     </div>
   </main>
@@ -31,11 +31,11 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  data () {
+  data() {
     return {
-      menuOpened: true
+      menuOpened: true,
     }
-  }
+  },
 })
 </script>
 
@@ -78,8 +78,7 @@ export default Vue.extend({
   text-decoration: none;
 }
 
-
-[aria-current="page"] {
+[aria-current='page'] {
   color: var(--gray);
 }
 

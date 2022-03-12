@@ -18,15 +18,17 @@ import Vue from 'vue'
 import { ContentfulClientApi, Entry } from 'contentful'
 import { getClient } from '~/plugins/contentful'
 export default Vue.extend({
-  data(): { socials: Entry<unknown>[]} {
+  data(): { socials: Entry<unknown>[] } {
     return {
-      socials: []
+      socials: [],
     }
   },
   async fetch() {
     const client: ContentfulClientApi = getClient()
-    this.socials = (await client.getEntries({ content_type: 'socialLinks' })).items
-  }
+    this.socials = (
+      await client.getEntries({ content_type: 'socialLinks' })
+    ).items
+  },
 })
 </script>
 

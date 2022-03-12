@@ -3,13 +3,25 @@
     <section>
       <p>A collaboration by</p>
       <nav aria-label="Footer navigation">
-        <a v-for="link in links" :key="link.sys.id" class="logo" :href="link.fields.url">
-          <nuxt-img :src="link.fields.logo.fields.file.url" :alt="link.fields.logo.fields.title" width="200" loading="lazy" />
+        <a
+          v-for="link in links"
+          :key="link.sys.id"
+          class="logo"
+          :href="link.fields.url"
+        >
+          <nuxt-img
+            :src="link.fields.logo.fields.file.url"
+            :alt="link.fields.logo.fields.title"
+            width="200"
+            loading="lazy"
+          />
         </a>
       </nav>
     </section>
 
-    <small>Built by <a href="https://talentedunicorn.com">Talentedunicorn</a></small>
+    <small
+      >Built by <a href="https://talentedunicorn.com">Talentedunicorn</a></small
+    >
   </footer>
 </template>
 
@@ -20,12 +32,17 @@ import { getClient } from '../plugins/contentful'
 export default Vue.extend({
   data(): { links: Entry<any>[] } {
     return {
-      links: []
+      links: [],
     }
   },
   async fetch() {
-    this.links = (await getClient().getEntries({ content_type: 'footerLinks', order: 'fields.title' })).items
-  }
+    this.links = (
+      await getClient().getEntries({
+        content_type: 'footerLinks',
+        order: 'fields.title',
+      })
+    ).items
+  },
 })
 </script>
 

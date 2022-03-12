@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <header class="header"> 
+    <header class="header">
       <h2 class="header-title">Welcome, {{ $auth.user.given_name }}</h2>
       <button class="button" @click="$auth.logout()">Log out</button>
     </header>
@@ -8,7 +8,9 @@
       <header class="content-header">
         <h3>{{ total }} pledges made</h3>
 
-        <button class="button" :disabled="downloading" @click="downloadCSV">Download CSV</button>
+        <button class="button" :disabled="downloading" @click="downloadCSV">
+          Download CSV
+        </button>
       </header>
       <template v-if="total < 1">
         <p>No pledges found</p>
@@ -18,13 +20,28 @@
           <span>
             Page
             <select @change="goTo($event)">
-              <option v-for="p in pages" :key="p" :value="p - 1" :selected="p - 1 === page">{{ p }}</option>
-            </select> 
+              <option
+                v-for="p in pages"
+                :key="p"
+                :value="p - 1"
+                :selected="p - 1 === page"
+              >
+                {{ p }}
+              </option>
+            </select>
             of {{ totalPages }}
           </span>
           <nav class="pagination">
-            <button class="button" :disabled="page === 0"  @click="previous">Previous</button>
-            <button class="button" :disabled="page === totalPages - 1" @click="next">Next</button>
+            <button class="button" :disabled="page === 0" @click="previous">
+              Previous
+            </button>
+            <button
+              class="button"
+              :disabled="page === totalPages - 1"
+              @click="next"
+            >
+              Next
+            </button>
           </nav>
         </div>
 
@@ -33,7 +50,10 @@
         </template>
         <ul v-else>
           <li v-for="pledge in pledges" :key="pledge.id">
-            <p>{{ pledge.fullName }} pledged on {{ pledge.createdAt | formatDate }}</p>
+            <p>
+              {{ pledge.fullName }} pledged on
+              {{ pledge.createdAt | formatDate }}
+            </p>
           </li>
         </ul>
       </template>
@@ -43,7 +63,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Pledge } from "@prisma/client"
+import { Pledge } from '@prisma/client'
 export default Vue.extend({
   middleware: ['auth'],
   async asyncData({ $axios }) {
@@ -56,22 +76,29 @@ export default Vue.extend({
       limit: 10,
       total: 0,
       pledges: [] as Partial<Pledge>[],
-      downloading: false
+      downloading: false,
     }
   },
   async fetch() {
-    this.pledges = (await this.$axios.get(`/api/admin/pledges?limit=${this.limit}&page=${this.page}`)).data.pledges
+    this.pledges = (
+      await this.$axios.get(
+        `/api/admin/pledges?limit=${this.limit}&page=${this.page}`
+      )
+    ).data.pledges
   },
   computed: {
     totalPages(): number {
       return Math.ceil(this.total / this.limit)
     },
     pages(): number[] {
-      const list = [];
-      let x = 1;
-      while(x <= this.totalPages) { list.push(x); x++ }
-      return list;
-    }
+      const list = []
+      let x = 1
+      while (x <= this.totalPages) {
+        list.push(x)
+        x++
+      }
+      return list
+    },
   },
   methods: {
     next(): void {
@@ -87,22 +114,23 @@ export default Vue.extend({
       }
     },
     goTo({ target }: { target: HTMLInputElement }): void {
-      this.page =  parseInt(target.value, 10)
+      this.page = parseInt(target.value, 10)
       this.$fetch()
     },
     async downloadCSV() {
       this.downloading = true
-      const downloadLink = document.createElement("a")
-      const { csvData } = (await this.$axios.get(`/api/admin/generate-csv`)).data
+      const downloadLink = document.createElement('a')
+      const { csvData } = (await this.$axios.get(`/api/admin/generate-csv`))
+        .data
       downloadLink.href = `data:text/csv;charset=utf-8,${csvData}`
       downloadLink.download = `pledges_${Date.now()}.csv`
-      
+
       document.body.append(downloadLink)
       downloadLink.click()
       document.body.removeChild(downloadLink)
       this.downloading = false
-    }
-  }
+    },
+  },
 })
 </script>
 

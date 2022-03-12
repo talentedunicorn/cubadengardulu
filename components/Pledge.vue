@@ -1,11 +1,16 @@
 <template>
   <div>
-    <button class="button" @click="pledgeOpened = true">
-      Pledge now
-    </button>
+    <button class="button" @click="pledgeOpened = true">Pledge now</button>
     <transition name="slide-down">
       <label v-if="!$fetchState.pending" class="PledgeProgress">
-        <progress v-if="pledgeCount < maxPledges" :value="pledgeCount" :max="maxPledges" :style="{ '--progress-value': `${(pledgeCount / maxPledges) * 100}%`}"></progress>
+        <progress
+          v-if="pledgeCount < maxPledges"
+          :value="pledgeCount"
+          :max="maxPledges"
+          :style="{
+            '--progress-value': `${(pledgeCount / maxPledges) * 100}%`,
+          }"
+        ></progress>
         {{ pledgeCount }} pledges made
       </label>
     </transition>
@@ -19,47 +24,68 @@
       <div v-else class="PledgeForm">
         <slot></slot>
         <form class="form" @submit.prevent="submit">
-          <div :class="{ hasError: error.path === 'fullName'}">
+          <div :class="{ hasError: error.path === 'fullName' }">
             <label for="fullName">Full name</label>
-            <input id="fullName" v-model="pledgeForm.fullName" type="text" required />
+            <input
+              id="fullName"
+              v-model="pledgeForm.fullName"
+              type="text"
+              required
+            />
           </div>
-          <div :class="{ hasError: error.path === 'phone'}">
+          <div :class="{ hasError: error.path === 'phone' }">
             <label for="phone">Phone number</label>
             <input id="phone" v-model="pledgeForm.phone" type="tel" required />
           </div>
-          <div :class="{ hasError: error.path === 'email'}">
+          <div :class="{ hasError: error.path === 'email' }">
             <label for="email">Email address</label>
-            <input id="email" v-model="pledgeForm.email" type="email" required />
+            <input
+              id="email"
+              v-model="pledgeForm.email"
+              type="email"
+              required
+            />
           </div>
-          <div :class="{ hasError: error.path === 'dateOfBirth'}">
+          <div :class="{ hasError: error.path === 'dateOfBirth' }">
             <label for="dateOfBirth">Date of birth</label>
-            <input id="dateOfBirth" v-model="pledgeForm.dateOfBirth" type="date" required />
+            <input
+              id="dateOfBirth"
+              v-model="pledgeForm.dateOfBirth"
+              type="date"
+              required
+            />
           </div>
-          <div :class="{ hasError: error.path === 'address'}">
+          <div :class="{ hasError: error.path === 'address' }">
             <label for="address">Address</label>
             <input id="address" v-model="pledgeForm.address" type="text" />
           </div>
-          <div :class="{ hasError: error.path === 'address2'}">
+          <div :class="{ hasError: error.path === 'address2' }">
             <label for="address2">Address2</label>
             <input id="address2" v-model="pledgeForm.address2" type="text" />
           </div>
-          <div :class="{ hasError: error.path === 'postCode'}">
+          <div :class="{ hasError: error.path === 'postCode' }">
             <label for="postCode">Postcode</label>
             <input id="postCode" v-model="pledgeForm.postCode" type="text" />
           </div>
-          <div :class="{ hasError: error.path === 'city'}">
+          <div :class="{ hasError: error.path === 'city' }">
             <label for="city">City</label>
             <input id="city" v-model="pledgeForm.city" type="text" />
           </div>
-          <div :class="{ hasError: error.path === 'state'}">
+          <div :class="{ hasError: error.path === 'state' }">
             <label for="state">State</label>
             <input id="state" v-model="pledgeForm.state" type="text" />
           </div>
-          <div :class="{ hasError: error.path === 'tshirtSize'}">
+          <div :class="{ hasError: error.path === 'tshirtSize' }">
             <h4>T-shirt size</h4>
             <p>If you would like to recieve a t-shirt, pick a size</p>
             <div v-for="size in sizes" :key="size" class="radio">
-              <input :id="size" v-model="pledgeForm.tshirtSize" type="radio" name="tshirtSize" :value="size">
+              <input
+                :id="size"
+                v-model="pledgeForm.tshirtSize"
+                type="radio"
+                name="tshirtSize"
+                :value="size"
+              />
               <label :for="size">{{ size.toUpperCase() }}</label>
             </div>
           </div>
@@ -70,7 +96,9 @@
             </span>
           </transition>
 
-          <button class="button" type="submit" :disabled="submitting">{{ submitting ? 'Submitting...' : 'Submit' }}</button>
+          <button class="button" type="submit" :disabled="submitting">
+            {{ submitting ? 'Submitting...' : 'Submit' }}
+          </button>
         </form>
       </div>
     </Modal>
@@ -83,31 +111,40 @@ import * as yup from 'yup'
 const sizes = ['s', 'm', 'l', 'xl', 'xxl', 'xxxl']
 const pledgeSchema = yup.object({
   fullName: yup.string().required(),
-  phone: yup.string().matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/, 'Invalid phone number').required(),
+  phone: yup
+    .string()
+    .matches(
+      /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
+      'Invalid phone number'
+    )
+    .required(),
   email: yup.string().email().required(),
   dateOfBirth: yup.date().required(),
   address: yup.string().required(),
   address2: yup.string(),
-  postCode: yup.string().matches(/^[0-9]{5}/, 'Invalid postcode').required(),
+  postCode: yup
+    .string()
+    .matches(/^[0-9]{5}/, 'Invalid postcode')
+    .required(),
   city: yup.string().required(),
   state: yup.string().required(),
-  tshirtSize: yup.mixed().oneOf(sizes, 'Select a t-shirt size').required()
+  tshirtSize: yup.mixed().oneOf(sizes, 'Select a t-shirt size').required(),
 })
 
-const maxPledges: number = parseInt(process.env.PLEDGE_LIMIT || '0', 10);
+const maxPledges: number = parseInt(process.env.PLEDGE_LIMIT || '0', 10)
 
 const pledgeFormDefault = () => ({
-        fullName: '',
-        phone: '',
-        email: '',
-        dateOfBirth: '',
-        address: '',
-        address2: '',
-        postCode: '',
-        city: '',
-        state: '',
-        tshirtSize: '',
-      })
+  fullName: '',
+  phone: '',
+  email: '',
+  dateOfBirth: '',
+  address: '',
+  address2: '',
+  postCode: '',
+  city: '',
+  state: '',
+  tshirtSize: '',
+})
 
 export default Vue.extend({
   data() {
@@ -119,7 +156,7 @@ export default Vue.extend({
       pledge: {},
       sizes,
       error: {},
-      pledgeForm: pledgeFormDefault()
+      pledgeForm: pledgeFormDefault(),
     }
   },
   async fetch() {
@@ -135,26 +172,33 @@ export default Vue.extend({
       this.pledgeForm = pledgeFormDefault()
     },
     async submit() {
-      this.submitting = true;
-      this.error = {};
+      this.submitting = true
+      this.error = {}
 
       try {
         await pledgeSchema.validate(this.pledgeForm)
         try {
-          this.pledge = (await this.$axios.post(`/api/pledges`, { ...this.pledgeForm, dateOfBirth: new Date(this.pledgeForm.dateOfBirth), postCode: parseInt(this.pledgeForm.postCode) })).data.pledge
+          this.pledge = (
+            await this.$axios.post(`/api/pledges`, {
+              ...this.pledgeForm,
+              dateOfBirth: new Date(this.pledgeForm.dateOfBirth),
+              postCode: parseInt(this.pledgeForm.postCode),
+            })
+          ).data.pledge
           this.$fetch()
           this.submitting = false
         } catch (e) {
+          // eslint-disable-next-line no-console
           console.error(e)
         }
-      } catch(e) {
+      } catch (e) {
         this.error = {
           message: e.message,
           path: e.path,
         }
       }
-    }
-  }
+    },
+  },
 })
 </script>
 
@@ -181,7 +225,9 @@ export default Vue.extend({
   content: '';
   position: absolute;
   border-radius: 0.5rem;
-  top: 0; left: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
 }
 
 .PledgeProgress progress::before {

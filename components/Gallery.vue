@@ -3,7 +3,13 @@
   <ol v-else class="gallery">
     <li v-for="item in gallery" :key="item.sys.id" class="gallery_item">
       <a :href="item.fields.link">
-        <nuxt-img :src="item.fields.image.fields.file.url" :alt="item.fields.image.fields.title" width="500" loading="lazy" format="webp" />
+        <nuxt-img
+          :src="item.fields.image.fields.file.url"
+          :alt="item.fields.image.fields.title"
+          width="500"
+          loading="lazy"
+          format="webp"
+        />
       </a>
     </li>
   </ol>
@@ -16,12 +22,14 @@ import { getClient } from '../plugins/contentful'
 export default Vue.extend({
   data() {
     return {
-      gallery: {} as ContentfulCollection<Entry<any>>
+      gallery: {} as ContentfulCollection<Entry<any>>,
     }
   },
   async fetch() {
-    this.gallery = (await getClient().getEntry('jsHkX7w53QgH0oWk0I4Xo') as Entry<any>).fields.items
-  }
+    this.gallery = (
+      (await getClient().getEntry('jsHkX7w53QgH0oWk0I4Xo')) as Entry<any>
+    ).fields.items
+  },
 })
 </script>
 
