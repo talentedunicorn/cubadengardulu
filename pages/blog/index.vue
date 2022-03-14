@@ -47,7 +47,6 @@ export default Vue.extend({
 <style scoped>
 .blog {
   display: flex;
-  min-height: 100%;
 }
 
 .blog_title {
