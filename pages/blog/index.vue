@@ -70,21 +70,27 @@ export default Vue.extend({
   padding: 1rem;
   border-radius: 1rem;
   position: relative;
+  transition: 0.3s ease-in;
 }
 
 .article::before {
   content: '';
-  flex: 10rem;
+  flex: 0 25rem;
   background: var(--bg, var(--gray-light)) no-repeat top center/cover;
   border-radius: inherit;
+  transition: inherit;
 }
 
 .article:hover {
   background: var(--white);
 }
 
+.article:hover::before {
+  transform: scale(0.9);
+}
+
 .article a {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   text-decoration: none;
 }
 

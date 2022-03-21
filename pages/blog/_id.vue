@@ -38,6 +38,7 @@ export default Vue.extend({
     RichTextRenderer,
   },
   layout: 'blog',
+  scrollToTop: true,
   async asyncData({ query, params }) {
     const article = await getClient(query.preview === 'true').getEntry(
       params.id
