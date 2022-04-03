@@ -8,16 +8,16 @@ datasource db {
 }
 
 model Pledge {
-  id  String  @id @default(uuid())
-  createdAt DateTime @default(now())
-  fullName String
-  email String @unique
-  phone String
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  fullName    String
+  email       String   @unique
+  phone       String
   dateOfBirth DateTime
-  address String
-  address2 String
-  postCode Int
-  city String
-  state String
-  tshirtSize String
+  address     String
+  address2    String
+  postCode    Int
+  city        String
+  state       String
+  tshirtSize  String?
 }

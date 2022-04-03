@@ -46,7 +46,7 @@
             loading="lazy"
             format="webp"
           />
-          <figcaption>
+          <figcaption v-if="maxPledges > pledgeCount">
             {{ pledgeContent.fields.image.fields.description }}
           </figcaption>
         </figure>
@@ -54,7 +54,7 @@
           <RichTextRenderer :document="pledgeContent.fields.content" />
           <RichTextRenderer :document="pledge.fields.content" />
           <client-only>
-            <Pledge ref="pledge">
+            <Pledge ref="pledge" :pledge-count="pledgeCount" :max-pledges="maxPledges" :recount="$fetch">
               <RichTextRenderer :document="pledge.fields.content" />
             </Pledge>
           </client-only>
@@ -127,9 +127,14 @@ export default Vue.extend({
   },
   data() {
     return {
+      maxPledges: parseInt(process.env.PLEDGE_LIMIT || '0', 10),
+      pledgeCount: 0,
       menuOpened: false,
       currentPlaylist: undefined,
     }
+  },
+  async fetch() {
+    this.pledgeCount = (await this.$axios.get(`/api/pledges`)).data.total
   },
   methods: {
     closeMenu() {
