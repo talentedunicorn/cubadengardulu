@@ -2,7 +2,7 @@
   <div>
     <button class="button" @click="pledgeOpened = true">Pledge now</button>
     <transition name="slide-down">
-      <label v-if="!$fetchState.pending" class="PledgeProgress">
+      <label v-if="pledgeCount > 1" class="PledgeProgress">
         <progress
           v-if="pledgeCount < maxPledges"
           :value="pledgeCount"
@@ -75,7 +75,7 @@
             <label for="state">State</label>
             <input id="state" v-model="pledgeForm.state" type="text" />
           </div>
-          <div :class="{ hasError: error.path === 'tshirtSize' }">
+          <div v-if="maxPledges > pledgeCount" :class="{ hasError: error.path === 'tshirtSize' }">
             <h4>T-shirt size</h4>
             <p>If you would like to recieve a t-shirt, pick a size</p>
             <div v-for="size in sizes" :key="size" class="radio">
@@ -109,7 +109,7 @@
 import Vue from 'vue'
 import * as yup from 'yup'
 const sizes = ['s', 'm', 'l', 'xl', 'xxl', 'xxxl']
-const pledgeSchema = yup.object({
+const pledgeSchema = (hideTshirt: boolean) => yup.object({
   fullName: yup.string().required(),
   phone: yup
     .string()
@@ -128,10 +128,8 @@ const pledgeSchema = yup.object({
     .required(),
   city: yup.string().required(),
   state: yup.string().required(),
-  tshirtSize: yup.mixed().oneOf(sizes, 'Select a t-shirt size').required(),
+  tshirtSize: hideTshirt ? yup.mixed().nullable() : yup.mixed().oneOf(sizes, 'Select a t-shirt size').required(),
 })
-
-const maxPledges: number = parseInt(process.env.PLEDGE_LIMIT || '0', 10)
 
 const pledgeFormDefault = () => ({
   fullName: '',
@@ -147,10 +145,22 @@ const pledgeFormDefault = () => ({
 })
 
 export default Vue.extend({
+  props: {
+    pledgeCount: {
+      type: Number,
+      default: 0,
+    },
+    maxPledges: {
+      type: Number,
+      default: 0
+    },
+    recount: {
+      type: Function,
+      default() { return 'Default function' }
+    }
+  },
   data() {
     return {
-      maxPledges,
-      pledgeCount: 0,
       pledgeOpened: false,
       submitting: false,
       pledge: {},
@@ -158,9 +168,6 @@ export default Vue.extend({
       error: {},
       pledgeForm: pledgeFormDefault(),
     }
-  },
-  async fetch() {
-    this.pledgeCount = (await this.$axios.get(`/api/pledges`)).data.total
   },
   methods: {
     openForm() {
@@ -176,7 +183,7 @@ export default Vue.extend({
       this.error = {}
 
       try {
-        await pledgeSchema.validate(this.pledgeForm)
+        await pledgeSchema(this.pledgeCount > this.maxPledges).validate(this.pledgeForm)
         try {
           this.pledge = (
             await this.$axios.post(`/api/pledges`, {
@@ -185,17 +192,19 @@ export default Vue.extend({
               postCode: parseInt(this.pledgeForm.postCode),
             })
           ).data.pledge
-          this.$fetch()
+          this.recount()
           this.submitting = false
         } catch (e) {
           // eslint-disable-next-line no-console
           console.error(e)
+          this.submitting = false
         }
       } catch (e) {
         this.error = {
           message: e.message,
           path: e.path,
         }
+        this.submitting = false
       }
     },
   },
