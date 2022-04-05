@@ -12,7 +12,6 @@
     <div class="PlaylistContent">
       <slot></slot>
       <iframe
-        v-show="iframeLoaded"
         :src="playlist.fields.link"
         :title="playlist.fields.title"
         width="100%"
@@ -21,7 +20,6 @@
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         class="PlaylistEmbed"
         loading="lazy"
-        @load="iframeLoaded = true"
       ></iframe>
     </div>
   </article>
@@ -49,11 +47,6 @@ export default Vue.extend({
       type: Object as PropType<TPlaylist>,
       default: {} as PropType<TPlaylist>,
     },
-  },
-  data() {
-    return {
-      iframeLoaded: false,
-    }
   },
 })
 </script>
