@@ -78,10 +78,6 @@ export default Vue.extend({
   text-decoration: none;
 }
 
-[aria-current='page'] {
-  color: var(--gray);
-}
-
 .side-toggle {
   position: absolute;
   left: 100%;
