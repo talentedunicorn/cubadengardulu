@@ -77,6 +77,7 @@ export default {
     FORMSPREE_ENDPOINT: process.env.FORMSPREE_ENDPOINT,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     PLEDGE_LIMIT: process.env.PLEDGE_LIMIT,
+    POSTS_PER_PAGE: process.env.POSTS_PER_PAGE,
     GA_ID: process.env.GA_ID,
   }
 }

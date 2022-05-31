@@ -25,9 +25,7 @@
   </article>
 </template>
 <script lang="ts">
-// eslint-disable-next-line import/named
 import Vue, { PropType } from 'vue'
-import { RichTextContent } from 'contentful'
 
 type TPlaylist = {
   fields: {
@@ -38,7 +36,7 @@ type TPlaylist = {
       }
     }
     link: string
-    content: RichTextContent
+    content: any
   }
 }
 export default Vue.extend({
