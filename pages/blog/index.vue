@@ -20,12 +20,20 @@
         </li>
       </ol>
       <nav v-if="totalPages > 1" class="pagination">
-        <NuxtLink :to="currentPage > 2 ? '/blog?page=' + (currentPage - 1) : '/blog'">
+        <NuxtLink
+          :to="currentPage > 2 ? '/blog?page=' + (currentPage - 1) : '/blog'"
+        >
           <svg viewBox="0 0 24 24" aria-label="Previous page">
             <use xlink:href="#arrow-left"></use>
           </svg>
         </NuxtLink>
-        <NuxtLink :to="currentPage < totalPages ? '/blog?page=' + (currentPage + 1) : '/blog?page=' + totalPages">
+        <NuxtLink
+          :to="
+            currentPage < totalPages
+              ? '/blog?page=' + (currentPage + 1)
+              : '/blog?page=' + totalPages
+          "
+        >
           <svg viewBox="0 0 24 24" aria-label="Next page">
             <use xlink:href="#arrow-right"></use>
           </svg>
@@ -39,7 +47,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { getClient } from '~/plugins/contentful'
-const itemsPerPage: number = parseInt(process.env.POSTS_PER_PAGE || '10', 10);
+const itemsPerPage: number = parseInt(process.env.POSTS_PER_PAGE || '10', 10)
 export default Vue.extend({
   layout: 'blog',
   scrollToTop: true,
@@ -53,34 +61,34 @@ export default Vue.extend({
   },
   async fetch() {
     const page: number = parseInt(this.$route.query.page as string, 10) || 0
-    const res = (
-      await getClient(this.$route.query.preview === 'true').getEntries({
-        content_type: 'article',
-        order: '-sys.updatedAt',
-        limit: itemsPerPage,
-        skip: page > 1 && page < this.total ? itemsPerPage * (page - 1) : 0,
-      })
-    )
-    const { items: articles, limit, skip, total } = res 
-    this.articles = articles;
-    this.limit = limit;
-    this.skip = skip;
-    this.total = total;
+    const res = await getClient(
+      this.$route.query.preview === 'true'
+    ).getEntries({
+      content_type: 'article',
+      order: '-sys.updatedAt',
+      limit: itemsPerPage,
+      skip: page > 1 && page < this.total ? itemsPerPage * (page - 1) : 0,
+    })
+    const { items: articles, limit, skip, total } = res
+    this.articles = articles
+    this.limit = limit
+    this.skip = skip
+    this.total = total
   },
   head: {
     title: 'Stories',
   },
   computed: {
     currentPage(): number {
-      return (this.skip / this.limit) + 1
+      return this.skip / this.limit + 1
     },
     totalPages(): number {
       return Math.ceil(this.total / this.limit)
     },
   },
   watch: {
-    '$route.query': '$fetch'
-  }
+    '$route.query': '$fetch',
+  },
 })
 </script>
 

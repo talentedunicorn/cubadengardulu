@@ -34,16 +34,15 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line import/named
 import Vue from 'vue'
-import { RichTextContent, ContentfulCollection, Entry } from 'contentful'
+import { ContentfulCollection, Entry } from 'contentful'
 import RichTextRenderer from 'contentful-rich-text-vue-renderer'
 import { getClient } from '~/plugins/contentful'
 
 interface FAQ {
   fields: {
     title: string
-    answer: RichTextContent
+    answer: any
   }
 }
 export default Vue.extend({

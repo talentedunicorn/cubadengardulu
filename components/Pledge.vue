@@ -75,7 +75,10 @@
             <label for="state">State</label>
             <input id="state" v-model="pledgeForm.state" type="text" />
           </div>
-          <div v-if="maxPledges > pledgeCount" :class="{ hasError: error.path === 'tshirtSize' }">
+          <div
+            v-if="maxPledges > pledgeCount"
+            :class="{ hasError: error.path === 'tshirtSize' }"
+          >
             <h4>T-shirt size</h4>
             <p>If you would like to recieve a t-shirt, pick a size</p>
             <div v-for="size in sizes" :key="size" class="radio">
@@ -109,27 +112,30 @@
 import Vue from 'vue'
 import * as yup from 'yup'
 const sizes = ['s', 'm', 'l', 'xl', 'xxl', 'xxxl']
-const pledgeSchema = (hideTshirt: boolean) => yup.object({
-  fullName: yup.string().required(),
-  phone: yup
-    .string()
-    .matches(
-      /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
-      'Invalid phone number'
-    )
-    .required(),
-  email: yup.string().email().required(),
-  dateOfBirth: yup.date().required(),
-  address: yup.string().required(),
-  address2: yup.string(),
-  postCode: yup
-    .string()
-    .matches(/^[0-9]{5}/, 'Invalid postcode')
-    .required(),
-  city: yup.string().required(),
-  state: yup.string().required(),
-  tshirtSize: hideTshirt ? yup.mixed().nullable() : yup.mixed().oneOf(sizes, 'Select a t-shirt size').required(),
-})
+const pledgeSchema = (hideTshirt: boolean) =>
+  yup.object({
+    fullName: yup.string().required(),
+    phone: yup
+      .string()
+      .matches(
+        /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
+        'Invalid phone number'
+      )
+      .required(),
+    email: yup.string().email().required(),
+    dateOfBirth: yup.date().required(),
+    address: yup.string().required(),
+    address2: yup.string(),
+    postCode: yup
+      .string()
+      .matches(/^[0-9]{5}/, 'Invalid postcode')
+      .required(),
+    city: yup.string().required(),
+    state: yup.string().required(),
+    tshirtSize: hideTshirt
+      ? yup.mixed().nullable()
+      : yup.mixed().oneOf(sizes, 'Select a t-shirt size').required(),
+  })
 
 const pledgeFormDefault = () => ({
   fullName: '',
@@ -152,12 +158,14 @@ export default Vue.extend({
     },
     maxPledges: {
       type: Number,
-      default: 0
+      default: 0,
     },
     recount: {
       type: Function,
-      default() { return 'Default function' }
-    }
+      default() {
+        return 'Default function'
+      },
+    },
   },
   data() {
     return {
@@ -183,7 +191,9 @@ export default Vue.extend({
       this.error = {}
 
       try {
-        await pledgeSchema(this.pledgeCount > this.maxPledges).validate(this.pledgeForm)
+        await pledgeSchema(this.pledgeCount > this.maxPledges).validate(
+          this.pledgeForm
+        )
         try {
           this.pledge = (
             await this.$axios.post(`/api/pledges`, {
