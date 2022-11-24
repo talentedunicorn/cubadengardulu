@@ -16,6 +16,7 @@
         </svg>
       </button>
       <div :class="{ opened: menuOpened }" class="menu">
+        <NuxtLink to="/blog" class="button"> Read stories </NuxtLink>
         <a v-scrollTo="'playlist'" href="#playlist" @click="closeMenu"
           >Listen</a
         >
@@ -23,15 +24,14 @@
         <a v-scrollTo="'getInTouch'" href="#getInTouch" @click="closeMenu"
           >Get in touch</a
         >
-        <NuxtLink to="/blog"> Read stories </NuxtLink>
-        <button class="button" @click="openPledge">Pledge now</button>
+        <!-- <button class="button" @click="openPledge">Pledge now</button>  -->
       </div>
     </aside>
 
     <section class="Intro">
       <div class="container">
         <h1 class="heading">{{ intro.fields.title }}</h1>
-        <RichTextRenderer :document="intro.fields.content" />
+        <RichTextRenderer :key="intro.sys.id" :document="intro.fields.content" />
       </div>
     </section>
 
@@ -46,18 +46,18 @@
             loading="lazy"
             format="webp"
           />
-          <figcaption v-if="maxPledges > pledgeCount">
+          <figcaption>
             {{ pledgeContent.fields.image.fields.description }}
           </figcaption>
         </figure>
         <div class="content">
-          <RichTextRenderer :document="pledgeContent.fields.content" />
-          <RichTextRenderer :document="pledge.fields.content" />
-          <client-only>
+          <RichTextRenderer :key="pledgeContent.sys.id" :document="pledgeContent.fields.content" />
+          <RichTextRenderer :key="pledge.sys.id" :document="pledge.fields.content" />
+          <!-- <client-only>
             <Pledge ref="pledge" :pledge-count="pledgeCount" :max-pledges="maxPledges" :recount="$fetch">
-              <RichTextRenderer :document="pledge.fields.content" />
+              <RichTextRenderer :key="pledge.sys.id + '_form'" :document="pledge.fields.content" />
             </Pledge>
-          </client-only>
+          </client-only> -->
         </div>
       </div>
     </section>
@@ -68,7 +68,7 @@
         <Carousel :items="playlists">
           <template #default="{ data }">
             <Playlist :playlist="data">
-              <RichTextRenderer :document="data.fields.content" />
+              <RichTextRenderer :key="data.sys.id" :document="data.fields.content" />
             </Playlist>
           </template>
         </Carousel>
@@ -78,12 +78,6 @@
       <div class="container">
         <h2 class="heading">FAQs</h2>
         <FAQs />
-      </div>
-    </section>
-    <section class="Gallery">
-      <div class="container">
-        <h2 class="heading">Gallery</h2>
-        <Gallery class="GalleryContent" />
       </div>
     </section>
     <section id="getInTouch" class="Contact">
@@ -99,6 +93,12 @@
           />
         </figure>
         <ContactForm class="ContactForm" />
+      </div>
+    </section>
+    <section class="Gallery">
+      <div class="container">
+        <h2 class="heading">Gallery</h2>
+        <Gallery class="GalleryContent" />
       </div>
     </section>
   </div>
@@ -117,25 +117,30 @@ export default Vue.extend({
   async asyncData({ query }) {
     const client: ContentfulClientApi = getClient(query.preview === 'true')
     const intro = await client.getEntry('2LeUyfp9edbEuOvBO1CCEQ')
-    const pledge = await client.getEntry('3DmtPWsvUUBrk4WZCzCxK3')
-    const contact = await client.getEntry('2msZyDJT8jzQ26M5y1fZ2Y')
+    const pledge = await client.getEntry('3DmtPWsvUUBrk4WZCzCxK3') as Entry<any>;
+    const contact = await client.getEntry('2msZyDJT8jzQ26M5y1fZ2Y');
     const pledgeContent = await client.getEntry('1Br2SVPNM0uxZjnRa9SCl4')
     const playlists = (
       (await client.getEntry('2t0hiFPmnXeUghTnOkFskW')) as Entry<any>
     ).fields.items
     return { intro, pledge, pledgeContent, playlists, contact }
   },
-  data() {
+  data: () => {
     return {
+      intro: {} as Entry<any>,
+      contact: {} as Entry<any>,
+      pledge: {} as Entry<any>,
+      pledgeContent: {} as Entry<any>,
       maxPledges: parseInt(process.env.PLEDGE_LIMIT || '0', 10),
       pledgeCount: 0,
       menuOpened: false,
-      currentPlaylist: undefined,
+      currentPlaylist: {} as Entry<any>,
+      playlists: []
     }
   },
-  async fetch() {
-    this.pledgeCount = (await this.$axios.get(`/api/pledges`)).data.total
-  },
+  // async fetch() {
+  //   this.pledgeCount = (await this.$axios.get(`/api/pledges`)).data.total
+  // },
   methods: {
     closeMenu() {
       if (this.menuOpened) this.menuOpened = false
@@ -182,10 +187,11 @@ export default Vue.extend({
 
 .menu {
   flex: 100%;
+  gap: 1rem;
 }
 
 .menu .button {
-  margin: 1rem;
+  padding: 0.5rem;
 }
 
 svg {
@@ -268,6 +274,10 @@ svg {
 .GalleryContent,
 .ContactForm {
   flex: 100%;
+}
+
+.ContactForm {
+  margin: 0 auto;
 }
 
 .Contact figure {

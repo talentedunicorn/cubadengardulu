@@ -20,6 +20,7 @@
     </figure>
     <section class="article_content container">
       <RichTextRenderer
+        :key="article.sys.id"
         :document="article.fields.content"
         :node-renderers="renderNodes()"
       />
@@ -45,7 +46,7 @@ export default Vue.extend({
     )
     return { article }
   },
-  data(): { article: Entry<any> } {
+  data: () => {
     return {
       article: {} as Entry<any>,
     }

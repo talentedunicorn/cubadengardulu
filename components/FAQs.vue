@@ -14,7 +14,7 @@
       </dt>
       <dd v-show="selected === item.sys.id" class="FAQContent">
         <div>
-          <RichTextRenderer :document="item.fields.answer" />
+          <RichTextRenderer :key="item.sys.id" :document="item.fields.answer" />
         </div>
         <figure v-if="item.fields.image">
           <nuxt-img

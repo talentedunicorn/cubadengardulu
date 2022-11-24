@@ -63,6 +63,7 @@ export default Vue.extend({
 
 .PlaylistImage {
   grid-area: image;
+  border-radius: 1rem;
 }
 
 .PlaylistContent {

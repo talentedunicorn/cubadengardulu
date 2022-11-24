@@ -2,8 +2,8 @@ export default {
   target: 'static',
   pageTransition: 'slide-down',
   head: {
-    title: 'Pledge now',
-    titleTemplate: '%s — Cuba Dengar Dulu',
+    title: '',
+    titleTemplate: (t) => t ?  `${t} — Cuba Dengar Dulu` : `Cuba Dengar Dulu`,
     htmlAttrs: {
       lang: 'en'
     },
