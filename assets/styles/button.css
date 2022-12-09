@@ -1,6 +1,7 @@
 .button {
   font-weight: bold;
   line-height: 1;
+  text-decoration: none;
   display: inline-flex;
   padding: 0.5em 1em;
   align-items: center;

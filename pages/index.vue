@@ -62,6 +62,23 @@
       </div>
     </section>
 
+    <section id="stories" class="Stories">
+      <div class="container">
+        <h2 class="heading">Latest stories</h2>
+        <div class="latest-posts">
+          <Preview
+            v-for="article in latestPosts"
+            :key="article.sys.id"
+            :background="article.fields.cover.fields.file.url"
+            :link="('/blog/' + article.sys.id)"
+            :title="article.fields.title"
+            :published="article.sys.updatedAt"
+          />
+        </div>
+        <NuxtLink to="/blog" class="button"> Read more </NuxtLink>
+      </div>
+    </section>
+
     <section id="playlist" class="Playlists">
       <div class="container">
         <h2 class="heading">Listen</h2>
@@ -123,7 +140,12 @@ export default Vue.extend({
     const playlists = (
       (await client.getEntry('2t0hiFPmnXeUghTnOkFskW')) as Entry<any>
     ).fields.items
-    return { intro, pledge, pledgeContent, playlists, contact }
+    const latestPosts = (await client.getEntries({
+      content_type: 'article',
+      order: '-sys.updatedAt',
+      limit: 5,
+    })).items;
+    return { intro, pledge, pledgeContent, playlists, contact, latestPosts }
   },
   data: () => {
     return {
@@ -131,6 +153,7 @@ export default Vue.extend({
       contact: {} as Entry<any>,
       pledge: {} as Entry<any>,
       pledgeContent: {} as Entry<any>,
+      latestPosts: [] as Entry<any>[],
       maxPledges: parseInt(process.env.PLEDGE_LIMIT || '0', 10),
       pledgeCount: 0,
       menuOpened: false,
@@ -256,6 +279,27 @@ svg {
   background: var(--white);
   border-radius: 2rem;
   align-self: flex-start;
+}
+
+.Stories .button {
+  margin-left: auto;
+}
+
+.latest-posts {
+  background: var(--gray-light);
+  display: grid;
+  grid-auto-columns: minmax(20rem, 1fr);
+  gap: 2rem;
+  padding: 2rem;
+  overflow-x: auto;
+  width: 100%;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 2rem;
+}
+
+.latest-posts > * {
+  scroll-snap-align: center;
+  grid-row: 1;
 }
 
 .Playlists,

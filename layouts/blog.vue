@@ -40,24 +40,21 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.wrapper,
-.side,
-.side nav,
-.content {
-  display: flex;
-}
-
 .wrapper {
   height: 100vh;
+  display: grid;
+  grid-template-columns: min-content auto;
 }
 
 .side {
+  display: grid;
   position: relative;
   background: var(--black);
   color: var(--white);
 }
 
 .side nav {
+  display: flex;
   padding: 2rem 0;
   align-items: center;
   justify-content: space-between;
@@ -106,6 +103,7 @@ export default Vue.extend({
 }
 
 .content {
+  display: flex;
   flex: 1;
   flex-flow: column;
   overflow-y: auto;

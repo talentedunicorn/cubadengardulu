@@ -1,24 +1,16 @@
 <template>
   <section class="blog">
     <div class="container">
-      <ol class="article_list">
-        <li
+      <div class="article_list">
+        <Preview 
           v-for="article in articles"
           :key="article.sys.id"
-          class="article"
-          :style="{ '--bg': `url(${article.fields.cover.fields.file.url})` }"
-        >
-          <NuxtLink :to="'/blog/' + article.sys.id">{{
-            article.fields.title
-          }}</NuxtLink>
-          <span
-            >Published on
-            <time :datetime="article.sys.updatedAt">{{
-              article.sys.updatedAt | formatDate
-            }}</time></span
-          >
-        </li>
-      </ol>
+          :background="article.fields.cover.fields.file.url"
+          :link="('/blog/' + article.sys.id)"
+          :title="article.fields.title"
+          :published="article.sys.updatedAt"
+        />
+      </div>
       <nav v-if="totalPages > 1" class="pagination">
         <NuxtLink
           :to="currentPage > 2 ? '/blog?page=' + (currentPage - 1) : '/blog'"
@@ -61,7 +53,7 @@ export default Vue.extend({
   },
   async fetch() {
     const page: number = parseInt(this.$route.query.page as string, 10) || 0
-    const res = await getClient(
+    const { items: articles, limit, skip, total } = await getClient(
       this.$route.query.preview === 'true'
     ).getEntries({
       content_type: 'article',
@@ -69,7 +61,6 @@ export default Vue.extend({
       limit: itemsPerPage,
       skip: page > 1 && page < this.total ? itemsPerPage * (page - 1) : 0,
     })
-    const { items: articles, limit, skip, total } = res
     this.articles = articles
     this.limit = limit
     this.skip = skip
@@ -94,62 +85,20 @@ export default Vue.extend({
 
 <style scoped>
 .blog,
-.article,
 .pagination {
   display: flex;
-}
-
-.blog_title {
-  font-size: 1rem;
-  text-transform: uppercase;
 }
 
 .article_list {
   display: grid;
   gap: 2rem;
-  list-style: none;
-  margin: 0;
   padding: 4rem 2rem;
+
 }
 
-.article {
-  flex-flow: column;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem;
-  border-radius: 1rem;
-  position: relative;
-  transition: 0.3s ease-in;
-}
-
-.article::before {
-  content: '';
-  flex: 0 25rem;
-  background: var(--bg, var(--gray-light)) no-repeat top center/cover;
-  border-radius: inherit;
-  transition: inherit;
-}
-
-.article:hover {
-  background: var(--white);
-}
-
-.article:hover::before {
-  transform: scale(0.9);
-}
-
-.article a {
-  font-size: 1.4rem;
-  text-decoration: none;
-}
-
-.article a::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.blog_title {
+  font-size: 1rem;
+  text-transform: uppercase;
 }
 
 .pagination {
