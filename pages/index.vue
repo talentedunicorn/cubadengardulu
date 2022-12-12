@@ -35,7 +35,7 @@
       </div>
     </section>
 
-    <section class="Pledge">
+    <!-- <section class="Pledge">
       <div class="container">
         <h2 class="heading">{{ pledgeContent.fields.title }}</h2>
         <figure>
@@ -53,14 +53,14 @@
         <div class="content">
           <RichTextRenderer :key="pledgeContent.sys.id" :document="pledgeContent.fields.content" />
           <RichTextRenderer :key="pledge.sys.id" :document="pledge.fields.content" />
-          <!-- <client-only>
+          <client-only>
             <Pledge ref="pledge" :pledge-count="pledgeCount" :max-pledges="maxPledges" :recount="$fetch">
               <RichTextRenderer :key="pledge.sys.id + '_form'" :document="pledge.fields.content" />
             </Pledge>
-          </client-only> -->
+          </client-only>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <section id="stories" class="Stories">
       <div class="container">
@@ -132,29 +132,38 @@ export default Vue.extend({
     RichTextRenderer,
   },
   async asyncData({ query }) {
+    const {
+      INTRO_CONTENT,
+      PLEDGE,
+      PLEDGE_CONTENT,
+      CONTACT_CONTENT,
+      PLAYLIST_CONTENT,
+      LATEST_POST_COUNT
+    } = process.env
     const client: ContentfulClientApi = getClient(query.preview === 'true')
-    const intro = await client.getEntry('2LeUyfp9edbEuOvBO1CCEQ')
-    const pledge = await client.getEntry('3DmtPWsvUUBrk4WZCzCxK3') as Entry<any>;
-    const contact = await client.getEntry('2msZyDJT8jzQ26M5y1fZ2Y');
-    const pledgeContent = await client.getEntry('1Br2SVPNM0uxZjnRa9SCl4')
+    const intro = await client.getEntry(INTRO_CONTENT!)
+    const pledge = await client.getEntry(PLEDGE!) as Entry<any>;
+    const contact = await client.getEntry(CONTACT_CONTENT!);
+    const pledgeContent = await client.getEntry(PLEDGE_CONTENT!)
     const playlists = (
-      (await client.getEntry('2t0hiFPmnXeUghTnOkFskW')) as Entry<any>
+      (await client.getEntry(PLAYLIST_CONTENT!)) as Entry<any>
     ).fields.items
     const latestPosts = (await client.getEntries({
       content_type: 'article',
       order: '-sys.updatedAt',
-      limit: 5,
+      limit: LATEST_POST_COUNT,
     })).items;
     return { intro, pledge, pledgeContent, playlists, contact, latestPosts }
   },
   data: () => {
+    const { PLEDGE_LIMIT } = process.env
     return {
       intro: {} as Entry<any>,
       contact: {} as Entry<any>,
       pledge: {} as Entry<any>,
       pledgeContent: {} as Entry<any>,
       latestPosts: [] as Entry<any>[],
-      maxPledges: parseInt(process.env.PLEDGE_LIMIT || '0', 10),
+      maxPledges: parseInt(PLEDGE_LIMIT || '0', 10),
       pledgeCount: 0,
       menuOpened: false,
       currentPlaylist: {} as Entry<any>,
@@ -288,7 +297,7 @@ svg {
 .latest-posts {
   background: var(--gray-light);
   display: grid;
-  grid-auto-columns: minmax(20rem, 1fr);
+  grid-auto-columns: minmax(var(--post-width, 20rem), 1fr);
   gap: 2rem;
   padding: 2rem;
   overflow-x: auto;
@@ -368,6 +377,9 @@ svg {
   .ContactForm {
     flex: 0 50rem;
     align-self: flex-start;
+  }
+  .latest-posts {
+    --post-width: 30rem;
   }
 }
 </style>
