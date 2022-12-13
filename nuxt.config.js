@@ -2,8 +2,8 @@ export default {
   target: 'static',
   pageTransition: 'slide-down',
   head: {
-    title: 'Pledge now',
-    titleTemplate: '%s — Cuba Dengar Dulu',
+    title: '',
+    titleTemplate: (t) => t ?  `${t} — Cuba Dengar Dulu` : `Cuba Dengar Dulu`,
     htmlAttrs: {
       lang: 'en'
     },
@@ -79,5 +79,11 @@ export default {
     PLEDGE_LIMIT: process.env.PLEDGE_LIMIT,
     POSTS_PER_PAGE: process.env.POSTS_PER_PAGE,
     GA_ID: process.env.GA_ID,
+    PLEDGE: process.env.PLEDGE,
+    INTRO_CONTENT: process.env.INTRO_CONTENT,
+    PLEDGE_CONTENT: process.env.PLEDGE_CONTENT,
+    CONTACT_CONTENT: process.env.CONTACT_CONTENT,
+    PLAYLIST_CONTENT: process.env.PLAYLIST_CONTENT,
+    LATEST_POST_COUNT: process.env.LATEST_POST_COUNT,
   }
 }
