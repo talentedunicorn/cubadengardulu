@@ -22,7 +22,7 @@
     "contentful": "^9.1.29",
     "contentful-rich-text-vue-renderer": "^2.1.0",
     "core-js": "^3.22.7",
-    "nuxt": "^2.15.8",
+    "nuxt": "^3.4.3",
     "yup": "^0.32.11"
   },
   "devDependencies": {
